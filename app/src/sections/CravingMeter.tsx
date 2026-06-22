@@ -1,65 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-
-const hungerLevels = [
-  {
-    level: 1,
-    label: 'Just Peckish',
-    emoji: '\u{1F34E}',
-    desc: 'A light nibble. Nothing heavy.',
-    dishes: [
-      { n: 'Classic Veg Maggi', p: '\u20B989', img: '/images/dish-bread-omelette.jpg' },
-      { n: 'Classic Jeera Rice', p: '\u20B999', img: '/images/dish-garlic-rice.jpg' },
-      { n: 'Zesty Lemon Rice', p: '\u20B999', img: '/images/dish-veg-rice.jpg' },
-    ],
-  },
-  {
-    level: 2,
-    label: 'Getting Hungry',
-    emoji: '\u{1F35C}',
-    desc: 'Need something satisfying.',
-    dishes: [
-      { n: 'Egg Fried Rice', p: '\u20B9149', img: '/images/dish-egg-rice.jpg' },
-      { n: 'Schezwan Noodles', p: '\u20B9149', img: '/images/dish-schezwan-noodles.jpg' },
-      { n: 'Classic Bread Omelette', p: '\u20B9129', img: '/images/dish-bread-omelette.jpg' },
-    ],
-  },
-  {
-    level: 3,
-    label: 'Proper Hunger',
-    emoji: '\u{1F357}',
-    desc: 'Time for a real meal.',
-    dishes: [
-      { n: 'Chilli Chicken', p: '\u20B9199', img: '/images/dish-chilli-chicken.jpg' },
-      { n: 'Chicken Fried Rice', p: '\u20B9199', img: '/images/food-chicken-rice.jpg' },
-      { n: 'Hakka Chicken Noodles', p: '\u20B9199', img: '/images/dish-hakka-noodles.jpg' },
-    ],
-  },
-  {
-    level: 4,
-    label: 'Starving',
-    emoji: '\u{1F969}',
-    desc: 'Big portions. Full power.',
-    dishes: [
-      { n: 'Late Night Saver Box', p: '\u20B9249', img: '/images/dish-garlic-rice.jpg' },
-      { n: 'Special Ghee Chicken Dry', p: '\u20B9249', img: '/images/food-ghee-chicken.jpg' },
-      { n: 'Ultimate Bachelor Box', p: '\u20B9299', img: '/images/food-chicken-rice.jpg' },
-    ],
-  },
-  {
-    level: 5,
-    label: 'Midnight Crisis',
-    emoji: '\u{1F525}',
-    desc: 'Emergency mode. Maximum flavour.',
-    dishes: [
-      { n: 'Wok Box Non Veg', p: '\u20B9249', img: '/images/food-chicken-rice.jpg' },
-      { n: 'Chilli Garlic Chicken Noodles', p: '\u20B9199', img: '/images/dish-hakka-noodles.jpg' },
-      { n: 'Chicken Lollypop [8pcs]', p: '\u20B9299', img: '/images/dish-lollypop.jpg' },
-    ],
-  },
-];
+import { Plus } from 'lucide-react';
+import { hungerLevels, getDishes } from '@/data/menu';
+import { useCart } from '@/contexts/CartContext';
 
 export default function CravingMeter() {
   const [hunger, setHunger] = useState(2);
+  const { getQty, setQty } = useCart();
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -70,6 +16,7 @@ export default function CravingMeter() {
   }, []);
 
   const current = hungerLevels[hunger - 1];
+  const dishes = getDishes(current.dishes);
 
   return (
     <section ref={ref} className="w-full bg-[#0A0A0A] py-16" id="night-shift">
@@ -137,23 +84,30 @@ export default function CravingMeter() {
           className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-[700px] mx-auto transition-all duration-400"
           key={hunger}
         >
-          {current.dishes.map((d, i) => (
-            <a
-              key={`${hunger}-${i}`}
-              href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-3 bg-[#111] rounded-xl overflow-hidden border border-white/[0.04] hover:border-[#E11D48]/20 transition-all"
-            >
-              <div className="w-[72px] h-[72px] flex-shrink-0 overflow-hidden">
-                <img src={d.img} alt={d.n} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+          {dishes.map((d, i) => {
+            const q = getQty(d.name);
+            return (
+              <div
+                key={`${hunger}-${i}`}
+                className="group flex items-center gap-3 bg-[#111] rounded-xl overflow-hidden border border-white/[0.04] hover:border-[#E11D48]/20 transition-all"
+              >
+                <div className="w-[72px] h-[72px] flex-shrink-0 overflow-hidden">
+                  <img src={d.img} alt={d.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                </div>
+                <div className="flex-1 min-w-0 pr-2">
+                  <p className="text-white text-[13px] font-medium truncate group-hover:text-[#E11D48] transition-colors">{d.name}</p>
+                  <p className="text-[#E11D48] text-[14px] font-bold mt-0.5">{`\u20B9${d.price}`}</p>
+                </div>
+                <button
+                  onClick={() => setQty(d.name, q + 1, d.price)}
+                  className="mr-2 w-8 h-8 rounded-full bg-[#E11D48] flex items-center justify-center text-white hover:bg-[#BE123C] transition-all shadow-[0_0_10px_rgba(225,29,72,0.3)] flex-shrink-0"
+                  aria-label={`Add ${d.name}`}
+                >
+                  {q > 0 ? <span className="text-[11px] font-bold">{q}</span> : <Plus size={14} />}
+                </button>
               </div>
-              <div className="flex-1 min-w-0 pr-3">
-                <p className="text-white text-[13px] font-medium truncate group-hover:text-[#E11D48] transition-colors">{d.n}</p>
-                <p className="text-[#E11D48] text-[14px] font-bold mt-0.5">{d.p}</p>
-              </div>
-            </a>
-          ))}
+            );
+          })}
         </div>
 
         {/* Hunger indicator dots */}
