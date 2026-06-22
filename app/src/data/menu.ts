@@ -77,9 +77,9 @@ export const menu: Dish[] = [
   { id: 'desi-masala-omelette', name: 'Desi Masala Omelette', price: 99, desc: 'Loaded with onions, tomatoes & chillies.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Onions', 'Tomatoes', 'Green chillies'] },
   { id: 'ghee-roast-omelette', name: 'Ghee Roast Omelette', price: 129, desc: 'Cooked purely in ghee, dusted with spice.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Pure ghee', 'Spices', 'Salt'] },
   { id: 'indo-chinese-omelette', name: 'Indo Chinese Omelette', price: 99, desc: 'Whisked with soy, chilli & spring onions.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Soy sauce', 'Chilli', 'Spring onions'] },
-  { id: 'roadside-egg-bhurji', name: 'Roadside Egg Bhurji', price: 99, desc: 'Aggressively tossed spicy scrambled eggs.', cat: 'Eggs', img: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Eggbhurjee.JPG', hot: true, ingredients: ['Egg', 'Onions', 'Tomatoes', 'Spices'] },
-  { id: 'nati-style-egg-roast', name: 'Nati Style Egg Roast [Double]', price: 89, desc: 'Slow roasted in spicy byadgi paste.', cat: 'Eggs', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Homemade_egg_curry_with_chapati.jpg/640px-Homemade_egg_curry_with_chapati.jpg', hot: true, ingredients: ['Egg', 'Byadgi chilli', 'Onions', 'Spices'] },
-  { id: 'boiled-egg-masala-fry', name: 'Boiled Egg Masala Fry', price: 149, desc: 'Rich tomato & ginger-garlic gravy.', cat: 'Eggs', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Egg_Fry_Recipe.png/640px-Egg_Fry_Recipe.png', ingredients: ['Boiled egg', 'Tomato', 'Ginger-garlic', 'Gravy'] },
+  { id: 'roadside-egg-bhurji', name: 'Roadside Egg Bhurji', price: 99, desc: 'Aggressively tossed spicy scrambled eggs.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Onions', 'Tomatoes', 'Spices'] },
+  { id: 'nati-style-egg-roast', name: 'Nati Style Egg Roast [Double]', price: 89, desc: 'Slow roasted in spicy byadgi paste.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Byadgi chilli', 'Onions', 'Spices'] },
+  { id: 'boiled-egg-masala-fry', name: 'Boiled Egg Masala Fry', price: 149, desc: 'Rich tomato & ginger-garlic gravy.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Boiled egg', 'Tomato', 'Ginger-garlic', 'Gravy'] },
   { id: 'spicy-omelette-sherva', name: 'Spicy Omelette Sherva', price: 149, desc: 'Fluffy omelette with deeply spiced sherva.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Sherva gravy', 'Spices', 'Onions'] },
 
   // ─── The Box Combo ───
@@ -106,6 +106,30 @@ export function getDishes(ids: string[]): Dish[] {
   return ids.map((id) => byId.get(id)).filter((d): d is Dish => Boolean(d));
 }
 
+// ─── Veg classification ───
+// Strict vegetarian (no egg, no meat). Used by the Craving Meter Veg toggle.
+export const VEG_DISH_IDS = new Set<string>([
+  // Veg Starters
+  'gobi-manchurian', 'chilli-gobi', 'crunchy-gobi-pakoda', 'mix-veg-manchurian',
+  'paneer-manchurian', 'chilli-paneer', 'spicy-paneer-pepper-grilled',
+  'mushroom-manchurian', 'chilli-mushroom',
+  'baby-corn-manchurian', 'chilli-baby-corn',
+  // Veg Rice
+  'street-style-veg-fried-rice', 'schezwan-veg-fried-rice',
+  'classic-jeera-rice', 'loaded-veg-masala-rice', 'zesty-lemon-rice', 'signature-butter-rice',
+  // Veg Noodles
+  'schezwan-noodles', 'classic-hakka-veg-noodles', 'chilli-garlic-veg-noodles',
+  // Veg Combos
+  'wok-box-veg',
+  // Veg Maggi
+  'classic-veg-maggi', 'cheesy-garlic-maggi',
+]);
+
+export function isVeg(idOrDish: string | Dish): boolean {
+  const id = typeof idOrDish === 'string' ? idOrDish : idOrDish.id;
+  return VEG_DISH_IDS.has(id);
+}
+
 // ─── Mood-based suggestions ───
 // These pick from the `menu` above by id. To change what shows under a mood,
 // swap the ids in the `dishes` array. Prices/names/images auto-stay in sync.
@@ -122,31 +146,46 @@ export const hungerLevels: HungerLevel[] = [
   {
     level: 1, label: 'Just Peckish', emoji: '\u{1F34E}',
     desc: 'A light nibble. Nothing heavy.',
-    dishes: ['classic-veg-maggi', 'classic-jeera-rice', 'zesty-lemon-rice'],
+    dishes: [
+      'classic-veg-maggi', 'classic-jeera-rice', 'zesty-lemon-rice',
+      'desi-masala-omelette', 'cheesy-garlic-maggi', 'crunchy-gobi-pakoda',
+    ],
   },
   {
     level: 2, label: 'Getting Hungry', emoji: '\u{1F35C}',
     desc: 'Need something satisfying.',
-    dishes: ['egg-fried-rice', 'schezwan-noodles', 'classic-bread-omelette'],
+    dishes: [
+      'egg-fried-rice', 'schezwan-noodles', 'classic-bread-omelette',
+      'masala-egg-maggi', 'street-style-veg-fried-rice', 'gobi-manchurian',
+    ],
   },
   {
     level: 3, label: 'Proper Hunger', emoji: '\u{1F357}',
     desc: 'Time for a real meal.',
-    dishes: ['chilli-chicken', 'chicken-fried-rice', 'hakka-chicken-noodles'],
+    dishes: [
+      'chilli-chicken', 'chicken-fried-rice', 'hakka-chicken-noodles',
+      'paneer-manchurian', 'chilli-paneer', 'schezwan-veg-fried-rice',
+    ],
   },
   {
     level: 4, label: 'Starving', emoji: '\u{1F969}',
     desc: 'Big portions. Full power.',
-    dishes: ['late-night-saver-box', 'special-ghee-chicken-dry', 'ultimate-bachelor-box'],
+    dishes: [
+      'late-night-saver-box', 'special-ghee-chicken-dry', 'ultimate-bachelor-box',
+      'wok-box-veg', 'chicken-manchurian', 'spicy-paneer-pepper-grilled',
+    ],
   },
   {
     level: 5, label: 'Midnight Crisis', emoji: '\u{1F525}',
     desc: 'Emergency mode. Maximum flavour.',
-    dishes: ['wok-box-non-veg', 'chilli-garlic-chicken-noodles', 'chicken-lollypop'],
+    dishes: [
+      'wok-box-non-veg', 'chilli-garlic-chicken-noodles', 'chicken-lollypop',
+      'crispy-chicken-pepper-fry', 'spicy-chilli-chicken-maggi', 'chilli-gobi',
+    ],
   },
 ];
 
-export type PersonalityKey = 'wolf' | 'owl';
+export type PersonalityKey = 'wolf' | 'owl' | 'devil' | 'comfort';
 
 export type Personality = {
   emoji: string;
@@ -168,6 +207,18 @@ export const personalities: Record<PersonalityKey, Personality> = {
     emoji: '\u{1F989}', name: 'Night Owl', tagline: 'Light & focused.',
     traits: ['Light Meals', 'Fried Rice Bowls', 'Quick Snacks'],
     dishes: ['egg-fried-rice', 'classic-bread-omelette', 'hakka-chicken-noodles'],
-    color: '#E11D48',
+    color: '#8B5CF6',
+  },
+  devil: {
+    emoji: '\u{1F336}', name: 'Spicy Devil', tagline: 'Bring the burn.',
+    traits: ['Fiery Heat', 'Byadgi Burn', 'Schezwan Lover'],
+    dishes: ['crispy-chicken-pepper-fry', 'schezwan-chicken-fried-rice', 'spicy-chilli-chicken-maggi'],
+    color: '#F97316',
+  },
+  comfort: {
+    emoji: '\u{1F33F}', name: 'Comfort Seeker', tagline: 'Soft, warm, simple.',
+    traits: ['Vegetarian', 'Mild & Cozy', 'Pure Comfort'],
+    dishes: ['cheesy-garlic-maggi', 'signature-butter-rice', 'paneer-manchurian'],
+    color: '#16A34A',
   },
 };

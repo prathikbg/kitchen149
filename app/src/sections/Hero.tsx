@@ -55,7 +55,7 @@ function NeonSign({ text, isHovered, onClick }: { text: string; isHovered: boole
       <span
         className="relative z-10 font-medium tracking-tight whitespace-nowrap transition-all duration-300 block"
         style={{
-          fontSize: 'clamp(1.5rem, 4vw, 2.8rem)',
+          fontSize: 'clamp(1.875rem, 5vw, 3.5rem)',
           color: isHovered ? '#E11D48' : '#E11D4820',
           textShadow: isHovered ? '0 0 8px rgba(225,29,72,0.8), 0 0 20px rgba(225,29,72,0.4)' : 'none',
         }}
@@ -191,21 +191,21 @@ export default function Hero() {
       </div>
 
       {/* Center Content */}
-      <div className="relative z-10 text-center px-6 max-w-[720px]">
+      <div className="relative z-10 text-center px-6 max-w-[880px]">
         {/* Tag */}
-        <div className="animate-fade-up inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/60 backdrop-blur-sm">
+        <div className="animate-fade-up inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/60 backdrop-blur-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-pulse" />
-          <span className="text-[9px] tracking-[0.3em] text-[#E11D48]/80 uppercase font-medium">The Night Shift Club</span>
+          <span className="text-[11px] tracking-[0.3em] text-[#E11D48]/80 uppercase font-semibold">The Night Shift Club</span>
         </div>
 
         {/* Sub-headline */}
-        <p className="animate-fade-up-d1 text-white/60 text-[11px] tracking-[0.4em] uppercase mb-6">
+        <p className="animate-fade-up-d1 text-white/60 text-[13px] tracking-[0.4em] uppercase mb-7">
           When The City Sleeps
         </p>
 
         {/* Interactive Neon Sign — hover to light up + background lights */}
         <div
-          className="animate-fade-up-d2 mb-8 flex justify-center"
+          className="animate-fade-up-d2 mb-10 flex justify-center"
           onMouseEnter={() => !isFlickering && setIsHovered(true)}
           onMouseLeave={() => !isFlickering && setIsHovered(false)}
         >
@@ -217,41 +217,41 @@ export default function Hero() {
         </div>
 
         {/* Subhead */}
-        <p className="animate-fade-up-d3 text-[#A3A3A3]/70 text-[13px] md:text-[14px] mt-4 leading-relaxed max-w-[380px] mx-auto">
+        <p className="animate-fade-up-d3 text-[#A3A3A3]/80 text-[16px] md:text-[18px] mt-4 leading-relaxed max-w-[560px] mx-auto">
           Indo-Chinese wok-tossed comfort food. Built for Bengaluru&apos;s night owls, gamers, coders &amp; dreamers.
         </p>
 
         {/* CTAs */}
-        <div className="animate-fade-up-d4 flex flex-wrap items-center justify-center gap-3 mt-8">
+        <div className="animate-fade-up-d4 flex flex-wrap items-center justify-center gap-3 mt-10">
           <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#E11D48] hover:bg-[#ff1a1a] text-white px-7 py-3 text-[11px] font-semibold tracking-[0.15em] transition-all rounded-full">
-            ORDER NOW <ArrowRight size={14} />
+            className="flex items-center gap-2 bg-[#E11D48] hover:bg-[#ff1a1a] text-white px-8 py-3.5 text-[13px] font-semibold tracking-[0.15em] transition-all rounded-full">
+            ORDER NOW <ArrowRight size={16} />
           </a>
           <button onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex items-center gap-2 text-[#A3A3A3] hover:text-white px-6 py-3 text-[11px] tracking-[0.12em] transition-all border border-white/10 hover:border-[#E11D48]/30 rounded-full">
+            className="flex items-center gap-2 text-[#A3A3A3] hover:text-white px-7 py-3.5 text-[13px] tracking-[0.12em] transition-all border border-white/10 hover:border-[#E11D48]/30 rounded-full">
             VIEW MENU
           </button>
         </div>
 
         {/* Characters */}
-        <div className="animate-fade-up-d5 flex items-center justify-center gap-6 mt-10">
+        <div className="animate-fade-up-d5 flex items-center justify-center gap-7 mt-12">
           <div className="flex items-center gap-2">
-            <span className="text-base">&#x1F43A;</span>
-            <span className="text-[10px] tracking-[0.15em] text-[#A3A3A3]/50 uppercase">Hungry Wolf</span>
+            <span className="text-xl">&#x1F43A;</span>
+            <span className="text-[12px] tracking-[0.18em] text-[#A3A3A3]/60 uppercase font-medium">Hungry Wolf</span>
           </div>
-          <div className="w-px h-4 bg-white/10" />
+          <div className="w-px h-5 bg-white/10" />
           <div className="flex items-center gap-2">
-            <span className="text-base">&#x1F989;</span>
-            <span className="text-[10px] tracking-[0.15em] text-[#A3A3A3]/50 uppercase">Night Owl</span>
+            <span className="text-xl">&#x1F989;</span>
+            <span className="text-[12px] tracking-[0.18em] text-[#A3A3A3]/60 uppercase font-medium">Night Owl</span>
           </div>
         </div>
 
         {/* Open Till 2AM */}
-        <div className="animate-fade-up-d5 mt-6 inline-block">
-          <div className="animate-pulse-glow inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/40">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E11D48" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span className="text-[9px] tracking-[0.2em] text-[#A3A3A3]/50 uppercase">Open Till</span>
-            <span className="text-[9px] tracking-[0.2em] text-[#E11D48] uppercase font-medium">2:00 AM</span>
+        <div className="animate-fade-up-d5 mt-7 inline-block">
+          <div className="animate-pulse-glow inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/40">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E11D48" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span className="text-[11px] tracking-[0.22em] text-[#A3A3A3]/60 uppercase font-medium">Open Till</span>
+            <span className="text-[11px] tracking-[0.22em] text-[#E11D48] uppercase font-bold">2:00 AM</span>
           </div>
         </div>
       </div>

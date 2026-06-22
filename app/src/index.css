@@ -112,4 +112,46 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .animate-fade-in { animation: fade-in 0.2s ease-out forwards; }
+
+  /* Craving Meter slider thumb (visible drag handle) */
+  .craving-slider { height: 8px; }
+  .craving-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #E11D48;
+    border: 3px solid #0A0A0A;
+    box-shadow: 0 0 0 2px #E11D48, 0 0 16px rgba(225, 29, 72, 0.6);
+    cursor: grab;
+    transition: transform 0.15s ease;
+  }
+  .craving-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+  .craving-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #E11D48;
+    border: 3px solid #0A0A0A;
+    box-shadow: 0 0 0 2px #E11D48, 0 0 16px rgba(225, 29, 72, 0.6);
+    cursor: grab;
+    transition: transform 0.15s ease;
+  }
+  .craving-slider::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.15); }
+  .craving-slider:focus-visible::-webkit-slider-thumb { outline: 2px solid #fff; outline-offset: 2px; }
+  .craving-slider:focus-visible::-moz-range-thumb { outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* Horizontal scroll without visible scrollbar */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Flame flicker for active heat level */
+  @keyframes flame-flicker {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(-1deg); }
+    25% { opacity: 0.85; transform: scale(1.08) rotate(2deg); }
+    50% { opacity: 1; transform: scale(0.95) rotate(-2deg); }
+    75% { opacity: 0.9; transform: scale(1.05) rotate(1deg); }
+  }
+  .animate-flame-flicker { animation: flame-flicker 0.9s ease-in-out infinite; transform-origin: 50% 90%; }
 }
