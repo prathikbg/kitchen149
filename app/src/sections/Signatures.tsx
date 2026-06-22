@@ -13,9 +13,15 @@ export default function Signatures() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true); }, { threshold: 0.05 });
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.01, rootMargin: '300px 0px' }
+    );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    // Safety fallback: ensure menu is visible even if the observer never fires
+    // (iOS Safari can miss intersections in some hash-scroll / restored-scroll edge cases)
+    const t = setTimeout(() => setVisible(true), 600);
+    return () => { observer.disconnect(); clearTimeout(t); };
   }, []);
 
   const filtered = activeCat === 'All' ? dishes : dishes.filter(d => d.cat === activeCat);
@@ -67,8 +73,14 @@ export default function Signatures() {
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
               >
-                {/* Image area with hover ingredients overlay */}
-                <div className="relative h-[180px] overflow-hidden">
+                {/* Image area with tap/hover ingredients overlay */}
+                <button
+                  type="button"
+                  onClick={() => setHoveredIdx(prev => (prev === i ? null : i))}
+                  aria-expanded={isHovered}
+                  aria-label={isHovered ? `Hide ingredients for ${d.name}` : `Show ingredients for ${d.name}`}
+                  className="relative h-[180px] w-full block overflow-hidden cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E11D48]/60"
+                >
                   <img
                     src={d.img}
                     alt={d.name}
@@ -85,7 +97,7 @@ export default function Signatures() {
                   {/* Darken on hover */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/30 to-transparent" />
 
-                  {/* Ingredients overlay on hover */}
+                  {/* Ingredients overlay on hover/tap */}
                   {isHovered && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center px-4 animate-fade-in">
                       <div className="flex items-center gap-1.5 mb-2.5">
@@ -114,13 +126,14 @@ export default function Signatures() {
                     <span className="text-[#E11D48] text-[15px] font-bold">{`\u20B9${d.price}`}</span>
                   </div>
 
-                  {/* Hover hint */}
+                  {/* Tap/hover hint */}
                   {!isHovered && (
-                    <div className="absolute bottom-2.5 left-2.5 text-[9px] text-[#A3A3A3]/40 tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-                      Hover for ingredients
+                    <div className="absolute bottom-2.5 left-2.5 text-[9px] text-[#A3A3A3]/60 tracking-wider uppercase sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                      <span className="sm:hidden">Tap for ingredients</span>
+                      <span className="hidden sm:inline">Hover for ingredients</span>
                     </div>
                   )}
-                </div>
+                </button>
 
                 {/* Content */}
                 <div className="p-4">

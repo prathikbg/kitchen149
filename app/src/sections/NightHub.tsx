@@ -251,6 +251,56 @@ function LiveClock() {
           </div>
         </div>
       </div>
+
+      {/* Red neon string lights — hand-strung beneath the panel */}
+      <NeonStringLights count={22} />
+    </div>
+  );
+}
+
+// ─── Red neon string lights (decorative) ───
+function NeonStringLights({ count = 20 }: { count?: number }) {
+  // Bulbs hang along a parabolic droop curve so they look strung, not stamped.
+  // y(t) = 4 * droop * t * (1 - t), t in [0,1]
+  const droop = 14;
+  return (
+    <div className="relative mt-4 sm:mt-5 pointer-events-none select-none" aria-hidden="true">
+      {/* Subtle wire */}
+      <svg
+        viewBox="0 0 600 30"
+        preserveAspectRatio="none"
+        className="absolute inset-x-0 top-[3px] w-full h-[20px]"
+      >
+        <path
+          d={`M 0 1 Q 300 ${1 + droop * 2} 600 1`}
+          stroke="rgba(255,255,255,0.12)"
+          strokeWidth="0.8"
+          fill="none"
+        />
+      </svg>
+      <div className="relative flex justify-between items-start px-1">
+        {Array.from({ length: count }).map((_, i) => {
+          const t = count > 1 ? i / (count - 1) : 0.5;
+          const y = 4 * droop * t * (1 - t);
+          return (
+            <span key={i} className="relative inline-block" style={{ transform: `translateY(${y}px)` }}>
+              {/* Tiny cap connecting bulb to wire */}
+              <span
+                className="absolute left-1/2 -top-[3px] w-[1px] h-[4px] -translate-x-1/2"
+                style={{ background: 'rgba(255,255,255,0.18)' }}
+              />
+              {/* Bulb */}
+              <span
+                className="block w-[7px] h-[7px] rounded-full bulb-twinkle"
+                style={{
+                  background: 'radial-gradient(circle at 30% 30%, #ff8a96 0%, #E11D48 55%, #7f1029 100%)',
+                  animationDelay: `${(i * 0.17) % 2.4}s`,
+                }}
+              />
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -288,8 +338,9 @@ function SocialProof() {
           >
             <span className="text-[22px]">{o.emoji}</span>
             <span className="text-[13px] text-[#A3A3A3] flex-1">
+              <span className="text-[#A3A3A3]/60">Someone in </span>
               <span className="text-white font-semibold">{o.from}</span>
-              <span className="text-[#A3A3A3]/60"> just ordered </span>
+              <span className="text-[#A3A3A3]/60"> ordered </span>
               <span className="text-[#E11D48] font-semibold">{o.dish}</span>
             </span>
             <span className="text-[10px] tracking-wider text-[#A3A3A3]/40 uppercase whitespace-nowrap font-medium">{o.ago}</span>

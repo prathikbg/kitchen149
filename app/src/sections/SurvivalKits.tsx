@@ -1,45 +1,52 @@
 import { useRef, useEffect, useState } from 'react';
-import { Flame, Gamepad2, BookOpen } from 'lucide-react';
+import { Flame, Gamepad2, BookOpen, Check, Plus } from 'lucide-react';
+import { getDishes } from '@/data/menu';
+import { useCart } from '@/contexts/CartContext';
 
 const kits = [
   {
     icon: Flame,
     name: 'Coding Combo',
     desc: 'For the 3 AM debugging sessions.',
-    items: ['Schezwan Noodles', 'Chilli Chicken', 'Cheesy Garlic Maggi'],
-    price: '\u20B9349',
+    dishIds: ['schezwan-noodles', 'chilli-chicken', 'cheesy-garlic-maggi'],
     tag: 'Bestseller',
-    color: '#E11D48',
   },
   {
     icon: Gamepad2,
     name: 'Gamer Pack',
     desc: 'Fuel for marathon gaming nights.',
-    items: ['Chicken Lollypop', 'Chicken 65', 'Masala Egg Maggi'],
-    price: '\u20B9399',
+    dishIds: ['chicken-lollypop', 'classic-chicken-65', 'masala-egg-maggi'],
     tag: 'Popular',
-    color: '#E11D48',
   },
   {
     icon: BookOpen,
     name: 'Exam Night Box',
     desc: 'Brain food for all-nighters.',
-    items: ['Egg Fried Rice', 'Gobi Manchurian', 'Spicy Chilli Chicken Maggi'],
-    price: '\u20B9299',
+    dishIds: ['egg-fried-rice', 'gobi-manchurian', 'spicy-chilli-chicken-maggi'],
     tag: 'Student Fav',
-    color: '#E11D48',
   },
 ];
 
 export default function SurvivalKits() {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const [justAdded, setJustAdded] = useState<number | null>(null);
+  const { setQty, getQty } = useCart();
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true); }, { threshold: 0.1 });
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  const handleGrab = (kitIdx: number, dishIds: string[]) => {
+    const dishes = getDishes(dishIds);
+    dishes.forEach((d) => {
+      setQty(d.name, getQty(d.name) + 1, d.price);
+    });
+    setJustAdded(kitIdx);
+    setTimeout(() => setJustAdded((v) => (v === kitIdx ? null : v)), 1800);
+  };
 
   return (
     <section ref={ref} id="kits" className="w-full bg-[#0A0A0A] py-20">
@@ -50,7 +57,11 @@ export default function SurvivalKits() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-[1200px] mx-auto">
-          {kits.map((kit, i) => (
+          {kits.map((kit, i) => {
+            const dishes = getDishes(kit.dishIds);
+            const total = dishes.reduce((s, d) => s + d.price, 0);
+            const added = justAdded === i;
+            return (
             <div key={i}
               className={`group relative bg-[#111] rounded-2xl p-7 border border-white/[0.04] hover:border-[#E11D48]/20 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
               style={{ transitionDelay: `${i * 120}ms` }}>
@@ -68,23 +79,34 @@ export default function SurvivalKits() {
 
               {/* Items */}
               <div className="space-y-2.5 mb-6">
-                {kit.items.map((item, j) => (
-                  <div key={j} className="flex items-center gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48]/40" />
-                    <span className="text-[14px] text-[#A3A3A3]">{item}</span>
+                {dishes.map((d) => (
+                  <div key={d.id} className="flex items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48]/40 flex-shrink-0" />
+                      <span className="text-[14px] text-[#A3A3A3] truncate">{d.name}</span>
+                    </div>
+                    <span className="text-[12px] text-[#A3A3A3]/60 font-medium flex-shrink-0">₹{d.price}</span>
                   </div>
                 ))}
               </div>
 
               <div className="flex items-center justify-between pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-                <span className="text-[#E11D48] text-[24px] font-bold">{kit.price}</span>
-                <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
-                  className="px-6 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white text-[12px] font-bold tracking-[0.15em] rounded-full transition-all">
-                  GRAB IT
-                </a>
+                <span className="text-[#E11D48] text-[24px] font-bold">₹{total}</span>
+                <button
+                  type="button"
+                  onClick={() => handleGrab(i, kit.dishIds)}
+                  aria-label={added ? `${kit.name} added to order` : `Add ${kit.name} to order`}
+                  className={`flex items-center gap-1.5 px-6 py-2.5 text-white text-[12px] font-bold tracking-[0.15em] rounded-full transition-all ${
+                    added
+                      ? 'bg-[#16A34A] hover:bg-[#15803D] shadow-[0_0_15px_rgba(22,163,74,0.4)]'
+                      : 'bg-[#E11D48] hover:bg-[#BE123C] shadow-[0_0_15px_rgba(225,29,72,0.3)]'
+                  }`}
+                >
+                  {added ? (<><Check size={14} /> ADDED</>) : (<><Plus size={14} /> GRAB IT</>)}
+                </button>
               </div>
             </div>
-          ))}
+          );})}
         </div>
       </div>
     </section>

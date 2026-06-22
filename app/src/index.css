@@ -154,4 +154,17 @@
     75% { opacity: 0.9; transform: scale(1.05) rotate(1deg); }
   }
   .animate-flame-flicker { animation: flame-flicker 0.9s ease-in-out infinite; transform-origin: 50% 90%; }
+
+  /* Red neon string-light bulb twinkle */
+  @keyframes bulb-twinkle {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 4px #ff3b5c, 0 0 10px rgba(225, 29, 72, 0.7), 0 0 22px rgba(225, 29, 72, 0.35);
+    }
+    50% {
+      opacity: 0.55;
+      box-shadow: 0 0 2px #ff3b5c, 0 0 5px rgba(225, 29, 72, 0.4), 0 0 10px rgba(225, 29, 72, 0.15);
+    }
+  }
+  .bulb-twinkle { animation: bulb-twinkle 2.4s ease-in-out infinite; }
 }

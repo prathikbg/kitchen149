@@ -14,7 +14,7 @@ function NeonSign({ text, isHovered, onClick }: { text: string; isHovered: boole
   return (
     <button
       onClick={onClick}
-      className="relative px-8 py-4 sm:px-12 sm:py-5 cursor-pointer transition-all duration-300 group"
+      className="relative px-5 py-3.5 sm:px-12 sm:py-5 cursor-pointer transition-all duration-300 group max-w-full"
       style={{ outline: 'none' }}
     >
       {/* Outer glass tube border — OFF by default, glows on hover */}
@@ -55,7 +55,7 @@ function NeonSign({ text, isHovered, onClick }: { text: string; isHovered: boole
       <span
         className="relative z-10 font-medium tracking-tight whitespace-nowrap transition-all duration-300 block"
         style={{
-          fontSize: 'clamp(1.875rem, 5vw, 3.5rem)',
+          fontSize: 'clamp(1.5rem, 6vw, 3.5rem)',
           color: isHovered ? '#E11D48' : '#E11D4820',
           textShadow: isHovered ? '0 0 8px rgba(225,29,72,0.8), 0 0 20px rgba(225,29,72,0.4)' : 'none',
         }}
@@ -193,13 +193,13 @@ export default function Hero() {
       {/* Center Content */}
       <div className="relative z-10 text-center px-6 max-w-[880px]">
         {/* Tag */}
-        <div className="animate-fade-up inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/60 backdrop-blur-sm">
+        <div className="animate-fade-up inline-flex items-center gap-2 mb-8 px-4 py-2 sm:px-5 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/60 backdrop-blur-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-pulse" />
-          <span className="text-[11px] tracking-[0.3em] text-[#E11D48]/80 uppercase font-semibold">The Night Shift Club</span>
+          <span className="text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.3em] text-[#E11D48]/80 uppercase font-semibold">The Night Shift Club</span>
         </div>
 
         {/* Sub-headline */}
-        <p className="animate-fade-up-d1 text-white/60 text-[13px] tracking-[0.4em] uppercase mb-7">
+        <p className="animate-fade-up-d1 text-white/60 text-[12px] sm:text-[13px] tracking-[0.22em] sm:tracking-[0.4em] uppercase mb-7">
           When The City Sleeps
         </p>
 
