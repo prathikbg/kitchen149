@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import { ShoppingBag, MessageCircle, Phone } from 'lucide-react';
-import { getKitchenStatus } from '@/lib/kitchenHours';
 
 const orderOptions = [
   {
@@ -36,12 +34,6 @@ const orderOptions = [
 ];
 
 export default function HungryWeGotYou() {
-  const [status, setStatus] = useState(() => getKitchenStatus());
-  useEffect(() => {
-    const i = setInterval(() => setStatus(getKitchenStatus()), 30_000);
-    return () => clearInterval(i);
-  }, []);
-
   return (
     <section className="relative w-full overflow-hidden bg-[#0A0A0A]">
       {/* Ambient red glow */}
@@ -50,27 +42,13 @@ export default function HungryWeGotYou() {
         style={{ background: 'rgba(225,29,72,0.08)', filter: 'blur(120px)' }}
       />
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-10 py-24 sm:py-28 text-center">
-        {/* Live status pill */}
-        <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border mb-7 animate-fade-up"
-          style={{ borderColor: `${status.color}40`, background: `${status.color}10` }}
-        >
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ background: status.color, animation: status.isOpen ? 'neon-pulse 1.6s ease-in-out infinite' : 'none' }}
-          />
-          <span className="text-[12px] tracking-[0.2em] uppercase font-bold" style={{ color: status.color }}>
-            {status.label}
-          </span>
-        </div>
-
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-10 pt-12 sm:pt-14 pb-24 sm:pb-28 text-center">
         {/* Headline */}
         <h2
-          className="font-bold tracking-tight text-white animate-fade-up"
-          style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', textShadow: '0 0 40px rgba(225,29,72,0.25)', animationDelay: '60ms' }}
+          className="font-bold tracking-tight text-white animate-fade-up whitespace-nowrap"
+          style={{ fontSize: 'clamp(1.75rem, 7.5vw, 4.5rem)', textShadow: '0 0 40px rgba(225,29,72,0.25)', animationDelay: '60ms' }}
         >
-          Hungry?
-          <br />
+          Hungry?{' '}
           <span
             className="text-[#E11D48]"
             style={{ textShadow: '0 0 20px rgba(225,29,72,0.5), 0 0 40px rgba(225,29,72,0.2)' }}

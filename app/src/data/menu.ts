@@ -19,28 +19,28 @@ export type Dish = {
 
 export const menu: Dish[] = [
   // ─── Chicken Starters ───
-  { id: 'classic-chicken-65', name: 'Classic Chicken 65', price: 199, desc: 'Fiery deep-fried chicken with curry leaves.', cat: 'Starters', img: '/images/dish-chicken-65.jpg', hot: true, ingredients: ['Chicken', 'Curry leaves', 'Spice 65 masala', 'Green chillies'] },
+  { id: 'classic-chicken-65', name: 'Classic Chicken 65', price: 199, desc: 'Fiery deep-fried chicken with curry leaves.', cat: 'Starters', img: '/images/classic-chicken-65.jpeg', hot: true, ingredients: ['Chicken', 'Curry leaves', 'Spice 65 masala', 'Green chillies'] },
   { id: 'classic-chicken-kebab', name: 'Classic Chicken Kebab', price: 149, desc: 'Smoky charcoal-grilled chicken.', cat: 'Starters', img: '/images/food-ghee-chicken.jpg', ingredients: ['Chicken', 'Yogurt marinade', 'Charcoal smoked', 'Spices'] },
   { id: 'signature-umami-kebab', name: 'Signature Umami Kebab', price: 149, desc: 'Secret marinade, perfectly grilled.', cat: 'Starters', img: '/images/dish-ghee-chicken.jpg', ingredients: ['Chicken', 'Secret marinade', 'Soy sauce', 'Garlic'] },
   { id: 'special-ghee-chicken-dry', name: 'Special Ghee Chicken Dry', price: 249, desc: 'Wok-tossed in pure ghee, garlic & dark soy.', cat: 'Starters', img: '/images/food-chicken-manchurian.jpg', hot: true, ingredients: ['Chicken', 'Pure ghee', 'Garlic', 'Dark soy'] },
   { id: 'chilli-chicken', name: 'Chilli Chicken', price: 199, desc: 'The late night classic. Bell peppers & soy.', cat: 'Starters', img: '/images/dish-chilli-chicken.jpg', hot: true, ingredients: ['Chicken', 'Bell peppers', 'Soy sauce', 'Green chillies'] },
-  { id: 'chicken-manchurian', name: 'Chicken Manchurian', price: 199, desc: 'Dark, savory classic with spring onions.', cat: 'Starters', img: '/images/dish-manchurian.jpg', ingredients: ['Chicken mince', 'Soy sauce', 'Ginger-garlic', 'Spring onions'] },
+  { id: 'chicken-manchurian', name: 'Chicken Manchurian', price: 199, desc: 'Dark, savory classic with spring onions.', cat: 'Starters', img: '/images/chicken-manchurian.jpeg', ingredients: ['Chicken mince', 'Soy sauce', 'Ginger-garlic', 'Spring onions'] },
   { id: 'garlic-chicken', name: 'Garlic Chicken', price: 199, desc: 'Punchy, dark roasted garlic sauce.', cat: 'Starters', img: '/images/food-chilli-chicken.jpg', hot: true, ingredients: ['Chicken', 'Roasted garlic', 'Soy sauce', 'Chilli'] },
   { id: 'crispy-chicken-pepper-fry', name: 'Crispy Chicken Pepper Fry', price: 199, desc: 'Fiery dry fry with black pepper & lemon.', cat: 'Starters', img: '/images/food-chicken-65.jpg', hot: true, ingredients: ['Chicken', 'Black pepper', 'Lemon', 'Curry leaves'] },
   { id: 'chicken-lollypop', name: 'Chicken Lollypop', price: 199, desc: 'Crispy wings with tangy szechuan dip.', cat: 'Starters', img: '/images/food-lollypop.jpg', ingredients: ['Chicken drumettes', 'Schezwan sauce', 'Crispy coating', 'Spices'] },
 
   // ─── Vegetarian Starters ───
   { id: 'gobi-manchurian', name: 'Gobi Manchurian', price: 149, desc: 'Crispy cauliflower in dark soy & garlic.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', ingredients: ['Cauliflower', 'Soy sauce', 'Garlic', 'Ginger'] },
-  { id: 'chilli-gobi', name: 'Chilli Gobi', price: 149, desc: 'Wok-tossed with sharp green chillies.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', hot: true, ingredients: ['Cauliflower', 'Green chillies', 'Soy sauce', 'Onions'] },
-  { id: 'crunchy-gobi-pakoda', name: 'Crunchy Gobi Pakoda', price: 149, desc: 'Gram flour coated, deep fried to a crunch.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', ingredients: ['Cauliflower', 'Gram flour', 'Spices', 'Deep fried'] },
+  { id: 'chilli-gobi', name: 'Chilli Gobi', price: 149, desc: 'Wok-tossed with sharp green chillies.', cat: 'Starters', img: '/images/chilli-gobi.jpeg', hot: true, ingredients: ['Cauliflower', 'Green chillies', 'Soy sauce', 'Onions'] },
+  { id: 'crunchy-gobi-pakoda', name: 'Crunchy Gobi Pakoda', price: 149, desc: 'Gram flour coated, deep fried to a crunch.', cat: 'Starters', img: '/images/crunchy-gobi-pakoda.jpeg', ingredients: ['Cauliflower', 'Gram flour', 'Spices', 'Deep fried'] },
   { id: 'mix-veg-manchurian', name: 'Mix Veg Manchurian', price: 149, desc: 'Mixed vegetable dumplings in soy glaze.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', ingredients: ['Mixed vegetables', 'Soy sauce', 'Garlic', 'Corn flour'] },
   { id: 'paneer-manchurian', name: 'Paneer Manchurian', price: 199, desc: 'Soft paneer cubes in savory sauce.', cat: 'Starters', img: '/images/food-chilli-paneer.jpg', ingredients: ['Paneer', 'Soy sauce', 'Ginger-garlic', 'Spring onions'] },
   { id: 'chilli-paneer', name: 'Chilli Paneer', price: 199, desc: 'Paneer seared with onions, soy & chilli.', cat: 'Starters', img: '/images/dish-chilli-paneer.jpg', hot: true, ingredients: ['Paneer', 'Onions', 'Soy sauce', 'Chilli'] },
   { id: 'spicy-paneer-pepper-grilled', name: 'Spicy Paneer Pepper Grilled', price: 249, desc: 'Dry roasted paneer with crushed pepper.', cat: 'Starters', img: '/images/food-paneer-grilled.jpg', hot: true, ingredients: ['Paneer', 'Black pepper', 'Capsicum', 'Onions'] },
-  { id: 'mushroom-manchurian', name: 'Mushroom Manchurian', price: 149, desc: 'Earthy mushrooms in ginger-garlic-soy base.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', ingredients: ['Mushrooms', 'Ginger-garlic', 'Soy sauce', 'Spring onions'] },
-  { id: 'chilli-mushroom', name: 'Chilli Mushroom', price: 149, desc: 'Hot & fiery wok-tossed with green chillies.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', hot: true, ingredients: ['Mushrooms', 'Green chillies', 'Soy sauce', 'Onions'] },
-  { id: 'baby-corn-manchurian', name: 'Baby Corn Manchurian', price: 149, desc: 'Crispy baby corn in savory manchurian gravy.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', ingredients: ['Baby corn', 'Manchurian gravy', 'Garlic', 'Soy'] },
-  { id: 'chilli-baby-corn', name: 'Chilli Baby Corn', price: 149, desc: 'Crunchy baby corn with bell peppers & soy.', cat: 'Starters', img: '/images/dish-gobi-manchurian.jpg', hot: true, ingredients: ['Baby corn', 'Bell peppers', 'Soy sauce', 'Chilli'] },
+  { id: 'mushroom-manchurian', name: 'Mushroom Manchurian', price: 149, desc: 'Earthy mushrooms in ginger-garlic-soy base.', cat: 'Starters', img: '/images/mushroom-manchurian.jpeg', ingredients: ['Mushrooms', 'Ginger-garlic', 'Soy sauce', 'Spring onions'] },
+  { id: 'chilli-mushroom', name: 'Chilli Mushroom', price: 149, desc: 'Hot & fiery wok-tossed with green chillies.', cat: 'Starters', img: '/images/chilli-mushroom.jpeg', hot: true, ingredients: ['Mushrooms', 'Green chillies', 'Soy sauce', 'Onions'] },
+  { id: 'baby-corn-manchurian', name: 'Baby Corn Manchurian', price: 149, desc: 'Crispy baby corn in savory manchurian gravy.', cat: 'Starters', img: '/images/baby-corn-manchurian.jpeg', ingredients: ['Baby corn', 'Manchurian gravy', 'Garlic', 'Soy'] },
+  { id: 'chilli-baby-corn', name: 'Chilli Baby Corn', price: 149, desc: 'Crunchy baby corn with bell peppers & soy.', cat: 'Starters', img: '/images/chilli-baby-corn.jpeg', hot: true, ingredients: ['Baby corn', 'Bell peppers', 'Soy sauce', 'Chilli'] },
 
   // ─── Non-Veg Rice ───
   { id: 'egg-fried-rice', name: 'Egg Fried Rice', price: 149, desc: 'Classic smoky rice with scrambled egg.', cat: 'Rice', img: '/images/dish-egg-rice.jpg', ingredients: ['Rice', 'Scrambled egg', 'Spring onions', 'Soy sauce'] },
@@ -60,8 +60,8 @@ export const menu: Dish[] = [
   { id: 'signature-butter-rice', name: 'Signature Butter Rice', price: 149, desc: 'Rich, buttery & indulgent.', cat: 'Rice', img: '/images/dish-garlic-rice.jpg', ingredients: ['Rice', 'Butter', 'Salt', 'Pepper'] },
 
   // ─── Clean Cut High Protein ───
-  { id: 'lean-egg-protein-toss', name: 'Lean Egg Protein Toss', price: 149, desc: 'Egg whites, lean & protein-packed.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg whites', 'Salt', 'Pepper', 'Spring onions'] },
-  { id: 'byadgi-burn-protein-omelette', name: 'Byadgi Burn Protein Omelette', price: 199, desc: 'Egg whites with byadgi chilli burn.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg whites', 'Byadgi chilli', 'Salt', 'Pepper'] },
+  { id: 'lean-egg-protein-toss', name: 'Lean Egg Protein Toss', price: 149, desc: 'Egg whites, lean & protein-packed.', cat: 'Eggs', img: '/images/Lean-Egg-Protein-Toss.jpeg', ingredients: ['Egg whites', 'Salt', 'Pepper', 'Spring onions'] },
+  { id: 'byadgi-burn-protein-omelette', name: 'Byadgi Burn Protein Omelette', price: 199, desc: 'Egg whites with byadgi chilli burn.', cat: 'Eggs', img: '/images/Byadgi-Burn-Protein-Omelette.jpeg', hot: true, ingredients: ['Egg whites', 'Byadgi chilli', 'Salt', 'Pepper'] },
 
   // ─── Noodles ───
   { id: 'schezwan-noodles', name: 'Schezwan Noodles', price: 149, desc: 'Fiery schezwan-tossed noodles.', cat: 'Noodles', img: '/images/dish-schezwan-noodles.jpg', hot: true, ingredients: ['Noodles', 'Schezwan sauce', 'Veggies', 'Garlic'] },
@@ -74,13 +74,13 @@ export const menu: Dish[] = [
 
   // ─── The Egg Cart ───
   { id: 'classic-bread-omelette', name: 'Classic Bread Omelette', price: 129, desc: 'Ghee-toasted bread wrapped in masala egg.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Bread', 'Ghee', 'Masala', 'Onions'] },
-  { id: 'desi-masala-omelette', name: 'Desi Masala Omelette', price: 99, desc: 'Loaded with onions, tomatoes & chillies.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Onions', 'Tomatoes', 'Green chillies'] },
-  { id: 'ghee-roast-omelette', name: 'Ghee Roast Omelette', price: 129, desc: 'Cooked purely in ghee, dusted with spice.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Pure ghee', 'Spices', 'Salt'] },
-  { id: 'indo-chinese-omelette', name: 'Indo Chinese Omelette', price: 99, desc: 'Whisked with soy, chilli & spring onions.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Egg', 'Soy sauce', 'Chilli', 'Spring onions'] },
-  { id: 'roadside-egg-bhurji', name: 'Roadside Egg Bhurji', price: 99, desc: 'Aggressively tossed spicy scrambled eggs.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Onions', 'Tomatoes', 'Spices'] },
-  { id: 'nati-style-egg-roast', name: 'Nati Style Egg Roast [Double]', price: 89, desc: 'Slow roasted in spicy byadgi paste.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Byadgi chilli', 'Onions', 'Spices'] },
-  { id: 'boiled-egg-masala-fry', name: 'Boiled Egg Masala Fry', price: 149, desc: 'Rich tomato & ginger-garlic gravy.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', ingredients: ['Boiled egg', 'Tomato', 'Ginger-garlic', 'Gravy'] },
-  { id: 'spicy-omelette-sherva', name: 'Spicy Omelette Sherva', price: 149, desc: 'Fluffy omelette with deeply spiced sherva.', cat: 'Eggs', img: '/images/dish-bread-omelette.jpg', hot: true, ingredients: ['Egg', 'Sherva gravy', 'Spices', 'Onions'] },
+  { id: 'desi-masala-omelette', name: 'Desi Masala Omelette', price: 99, desc: 'Loaded with onions, tomatoes & chillies.', cat: 'Eggs', img: '/images/Desi-Masala-Omelette.jpeg', ingredients: ['Egg', 'Onions', 'Tomatoes', 'Green chillies'] },
+  { id: 'ghee-roast-omelette', name: 'Ghee Roast Omelette', price: 129, desc: 'Cooked purely in ghee, dusted with spice.', cat: 'Eggs', img: '/images/Ghee-Roast-Omelette.jpeg', ingredients: ['Egg', 'Pure ghee', 'Spices', 'Salt'] },
+  { id: 'indo-chinese-omelette', name: 'Indo Chinese Omelette', price: 99, desc: 'Whisked with soy, chilli & spring onions.', cat: 'Eggs', img: '/images/Indo-Chinese-Omelett.jpeg', ingredients: ['Egg', 'Soy sauce', 'Chilli', 'Spring onions'] },
+  { id: 'roadside-egg-bhurji', name: 'Roadside Egg Bhurji', price: 99, desc: 'Aggressively tossed spicy scrambled eggs.', cat: 'Eggs', img: '/images/Roadside-Egg-Bhurji.jpeg', hot: true, ingredients: ['Egg', 'Onions', 'Tomatoes', 'Spices'] },
+  { id: 'nati-style-egg-roast', name: 'Nati Style Egg Roast [Double]', price: 89, desc: 'Slow roasted in spicy byadgi paste.', cat: 'Eggs', img: '/images/NatiStyle-Egg-Roast%5BDouble%5D.jpeg', hot: true, ingredients: ['Egg', 'Byadgi chilli', 'Onions', 'Spices'] },
+  { id: 'boiled-egg-masala-fry', name: 'Boiled Egg Masala Fry', price: 149, desc: 'Rich tomato & ginger-garlic gravy.', cat: 'Eggs', img: '/images/Boiled-Egg-Masala-Fry.jpeg', ingredients: ['Boiled egg', 'Tomato', 'Ginger-garlic', 'Gravy'] },
+  { id: 'spicy-omelette-sherva', name: 'Spicy Omelette Sherva', price: 149, desc: 'Fluffy omelette with deeply spiced sherva.', cat: 'Eggs', img: '/images/Spicy-Omelette-Sherva.jpeg', hot: true, ingredients: ['Egg', 'Sherva gravy', 'Spices', 'Onions'] },
 
   // ─── The Box Combo ───
   { id: 'late-night-saver-box', name: 'Late Night Saver Box', price: 249, desc: 'Ghee rice + kebabs + sherva. Full meal.', cat: 'Combos', img: '/images/food-saver-box.jpg', ingredients: ['Ghee rice', 'Chicken kebab', 'Sherva gravy', 'Raita'] },
