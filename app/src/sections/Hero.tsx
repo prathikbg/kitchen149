@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const neonMessages = [
@@ -10,83 +10,113 @@ const neonMessages = [
   'The Owl Knows.',
 ];
 
-function NeonSign({ text, isHovered, onClick }: { text: string; isHovered: boolean; onClick: () => void }) {
+// Wolf opens, owl replies — rotates with each neon message
+const dialogues = [
+  { wolf: 'still up?',           owl: 'since 2 AM.' },
+  { wolf: 'boss is awake.',      owl: "we don't sleep." },
+  { wolf: 'noodles?',            owl: 'obviously.' },
+  { wolf: 'chilli or schezwan?', owl: 'yes.' },
+  { wolf: 'smell that wok hei?', owl: 'always.' },
+  { wolf: "what's cooking?",     owl: 'everything.' },
+];
+
+// Deterministic pseudo-random so each text has a stable "broken" pattern
+function hashCharState(text: string, i: number): 'alive' | 'flicker' | 'dead' {
+  let h = 0;
+  for (let k = 0; k < text.length; k++) h = (h * 31 + text.charCodeAt(k)) | 0;
+  const r = Math.abs(Math.sin((h + i * 977) * 0.1)) % 1;
+  if (r < 0.22) return 'dead';
+  if (r < 0.48) return 'flicker';
+  return 'alive';
+}
+
+// Sparks fly from random spots on hover — pure CSS, infinite loop with staggered delays
+const SPARKS = [
+  { left: '14%', top: '38%', delay: '0s',    dur: '1.2s', sx: '7px',   sy: '-12px' },
+  { left: '29%', top: '52%', delay: '0.35s', dur: '0.9s', sx: '-5px',  sy: '-14px' },
+  { left: '46%', top: '32%', delay: '0.7s',  dur: '1.3s', sx: '9px',   sy: '-9px'  },
+  { left: '63%', top: '55%', delay: '0.15s', dur: '1.1s', sx: '-7px',  sy: '-15px' },
+  { left: '78%', top: '40%', delay: '0.55s', dur: '1.0s', sx: '6px',   sy: '-10px' },
+  { left: '91%', top: '48%', delay: '0.85s', dur: '1.4s', sx: '-4px',  sy: '-13px' },
+];
+
+function NeonSign({ text, isHovered, isFlickering, onClick }: { text: string; isHovered: boolean; isFlickering: boolean; onClick: () => void }) {
+  // Stable per-character "broken" state for this message
+  const chars = useMemo(
+    () => text.split('').map((c, i) => ({ c, state: c === ' ' ? 'space' : hashCharState(text, i) })),
+    [text]
+  );
+
   return (
     <button
       onClick={onClick}
-      className="relative px-5 py-3.5 sm:px-12 sm:py-5 cursor-pointer transition-all duration-300 group max-w-full"
+      aria-label="Broken neon sign — tap to flicker"
+      className="relative px-3 py-2 sm:px-6 sm:py-3 cursor-pointer max-w-full"
       style={{ outline: 'none' }}
     >
-      {/* Outer glass tube border — OFF by default, glows on hover */}
-      <div
-        className="absolute inset-0 rounded-xl border-2 transition-all duration-300"
-        style={{
-          borderColor: isHovered ? '#E11D48' : '#E11D4815',
-          boxShadow: isHovered
-            ? '0 0 10px #E11D48, 0 0 20px #E11D48, 0 0 40px rgba(225,29,72,0.4), inset 0 0 10px rgba(225,29,72,0.1)'
-            : 'none',
-        }}
-      />
-
-      {/* Corner brackets — glow on hover */}
-      {[
-        '-top-1 -left-1 border-t-2 border-l-2 rounded-tl-sm',
-        '-top-1 -right-1 border-t-2 border-r-2 rounded-tr-sm',
-        '-bottom-1 -left-1 border-b-2 border-l-2 rounded-bl-sm',
-        '-bottom-1 -right-1 border-b-2 border-r-2 rounded-br-sm',
-      ].map((cls, i) => (
-        <span
-          key={i}
-          className={`absolute w-3 h-3 ${cls} transition-all duration-300`}
-          style={{
-            borderColor: isHovered ? '#E11D48' : '#E11D4815',
-            boxShadow: isHovered ? '0 0 6px #E11D48' : 'none',
-          }}
-        />
-      ))}
-
-      {/* Inner glow panel — on hover only */}
-      <div
-        className="absolute inset-1 rounded-lg transition-all duration-300"
-        style={{ background: isHovered ? 'rgba(225,29,72,0.03)' : 'transparent' }}
-      />
-
-      {/* The text — OFF (dark) by default, red neon on hover */}
       <span
-        className="relative z-10 font-medium tracking-tight whitespace-nowrap transition-all duration-300 block"
-        style={{
-          fontSize: 'clamp(1.5rem, 6vw, 3.5rem)',
-          color: isHovered ? '#E11D48' : '#E11D4820',
-          textShadow: isHovered ? '0 0 8px rgba(225,29,72,0.8), 0 0 20px rgba(225,29,72,0.4)' : 'none',
-        }}
+        className="relative z-10 font-medium tracking-tight whitespace-nowrap block"
+        style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)' }}
       >
-        {text}
+        {chars.map((ch, i) => {
+          if (ch.state === 'space') return <span key={i}>&nbsp;</span>;
+          const isDead = ch.state === 'dead';
+          const isFlicker = ch.state === 'flicker';
+
+          // Off-state colors telegraph "damaged tube" even without hover
+          const offColor =
+            isDead    ? 'rgba(120, 90, 100, 0.38)'   // ghost — phosphor scraped off
+            : isFlicker ? 'rgba(220, 165, 180, 0.55)' // weakened tube
+            :            'rgba(255, 180, 195, 0.75)'; // healthy unlit tube
+
+          // On-state (hover) — dead stays dim, flicker pulses, alive blazes
+          const onColor   = isDead ? 'rgba(160, 90, 100, 0.35)' : '#E11D48';
+          const onShadow  = isDead
+            ? '0 1px 2px rgba(0,0,0,0.85)'
+            : isFlicker
+              ? '0 0 5px rgba(225,29,72,0.7), 0 0 12px rgba(225,29,72,0.35)'
+              : '0 0 8px rgba(225,29,72,0.85), 0 0 20px rgba(225,29,72,0.45), 0 0 40px rgba(225,29,72,0.25)';
+
+          // During power-on flicker, snap colors instantly so the stutter reads as broken
+          const useFlickerAnim = isHovered && isFlicker && !isFlickering;
+
+          return (
+            <span
+              key={i}
+              className={useFlickerAnim ? 'neon-broken-flicker inline-block' : 'inline-block transition-colors duration-300'}
+              style={{
+                color: isHovered ? onColor : offColor,
+                textShadow: isHovered ? onShadow : '0 1px 2px rgba(0,0,0,0.85), 0 0 10px rgba(225,29,72,0.2)',
+                transition: isFlickering ? 'none' : undefined,
+              }}
+            >
+              {ch.c}
+            </span>
+          );
+        })}
       </span>
 
-      {/* Cable/wire decoration top */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex gap-1">
-        {[3, 2, 3].map((h, i) => (
-          <div
-            key={i}
-            className="w-px transition-all duration-300"
-            style={{
-              height: `${h * 4}px`,
-              background: isHovered ? 'rgba(225,29,72,0.4)' : '#333',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Hint — shows when OFF (not hovered) */}
-      <span
-        className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] tracking-[0.2em] uppercase transition-all duration-300"
-        style={{
-          opacity: isHovered ? 0 : 1,
-          color: '#E11D4820',
-        }}
-      >
-        Hover to light up
-      </span>
+      {/* Sparks — only visible on hover, pure CSS infinite loops */}
+      {isHovered && (
+        <div className="absolute inset-0 pointer-events-none overflow-visible z-20">
+          {SPARKS.map((s, i) => (
+            <span
+              key={i}
+              className="absolute w-[3px] h-[3px] rounded-full bg-white spark-fly"
+              style={{
+                left: s.left,
+                top: s.top,
+                animationDelay: s.delay,
+                animationDuration: s.dur,
+                boxShadow:
+                  '0 0 4px #fff, 0 0 8px rgba(225,29,72,0.95), 0 0 14px rgba(225,29,72,0.55)',
+                ['--sx' as never]: s.sx,
+                ['--sy' as never]: s.sy,
+              }}
+            />
+          ))}
+        </div>
+      )}
     </button>
   );
 }
@@ -119,34 +149,37 @@ export default function Hero() {
     <section className="relative w-full min-h-screen overflow-hidden bg-[#0A0A0A] flex items-center justify-center">
       {/* Neon Background */}
       <div className="absolute inset-0 z-0">
-        <img src="/images/hero-neon.jpg" alt="" className="w-full h-full object-cover" style={{ opacity: isHovered ? 0.85 : 0.5, transition: 'opacity 0.6s ease' }} />
+        <img src="/images/hero-neon.jpg" alt="" className="w-full h-full object-cover" style={{ opacity: isHovered ? 0.85 : 0.5, transition: isFlickering ? 'none' : 'opacity 0.6s ease' }} />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-[#0A0A0A]/60" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/80 via-transparent to-[#0A0A0A]/80" />
       </div>
 
       {/* Background ambient glow — appears on hover */}
       <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none z-0 transition-all duration-700"
+        className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none z-0 ${isFlickering ? '' : 'transition-all duration-700'}`}
         style={{
           background: isHovered ? 'rgba(225,29,72,0.08)' : 'rgba(225,29,72,0)',
           filter: 'blur(100px)',
+          transition: isFlickering ? 'none' : undefined,
         }}
       />
       {/* Secondary glow spots */}
       <div
-        className="absolute top-[20%] left-[20%] w-[200px] h-[200px] rounded-full pointer-events-none z-0 transition-all duration-700"
+        className={`absolute top-[20%] left-[20%] w-[200px] h-[200px] rounded-full pointer-events-none z-0 ${isFlickering ? '' : 'transition-all duration-700'}`}
         style={{
           background: isHovered ? 'rgba(225,29,72,0.06)' : 'transparent',
           filter: 'blur(80px)',
-          transitionDelay: '100ms',
+          transitionDelay: isFlickering ? '0ms' : '100ms',
+          transition: isFlickering ? 'none' : undefined,
         }}
       />
       <div
-        className="absolute bottom-[30%] right-[15%] w-[250px] h-[250px] rounded-full pointer-events-none z-0 transition-all duration-700"
+        className={`absolute bottom-[30%] right-[15%] w-[250px] h-[250px] rounded-full pointer-events-none z-0 ${isFlickering ? '' : 'transition-all duration-700'}`}
         style={{
           background: isHovered ? 'rgba(225,29,72,0.05)' : 'transparent',
           filter: 'blur(90px)',
-          transitionDelay: '200ms',
+          transitionDelay: isFlickering ? '0ms' : '200ms',
+          transition: isFlickering ? 'none' : undefined,
         }}
       />
 
@@ -164,30 +197,98 @@ export default function Hero() {
         <div className="w-px h-10 bg-gradient-to-t from-[#E11D48]/15 to-transparent rounded-full animate-steam" />
       </div>
 
-      {/* Wolf — dim by default, bright on hover */}
-      <div
-        className="absolute left-0 top-[15%] md:left-[4%] md:top-[10%] w-[140px] md:w-[220px] pointer-events-none animate-float z-[2] transition-opacity duration-500"
-        style={{ opacity: isHovered ? 0.7 : 0.25 }}
-      >
-        <img
-          src="/images/wolf-line.png"
-          alt=""
-          className="w-full h-auto transition-all duration-500"
-          style={{ filter: isHovered ? 'drop-shadow(0 0 20px rgba(255,26,26,0.6))' : 'drop-shadow(0 0 5px rgba(255,26,26,0.1))' }}
+      {/* Hungry wolf calls his mate — a red ember drifts from wolf to owl every 9s */}
+      <div className="absolute top-[18%] md:top-[14%] left-[14%] right-[14%] pointer-events-none z-[2]">
+        <div
+          className="wolf-call-orb absolute top-0"
+          style={{
+            width: '10px',
+            height: '10px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255,220,225,1) 0%, rgba(255,80,100,0.95) 35%, rgba(225,29,72,0.6) 65%, transparent 90%)',
+            boxShadow: '0 0 10px rgba(255,80,100,0.9), 0 0 24px rgba(225,29,72,0.55), 0 0 48px rgba(225,29,72,0.25)',
+          }}
         />
       </div>
 
+      {/* Wolf — dim by default, bright on hover */}
+      <div className="absolute left-0 top-[15%] md:left-[4%] md:top-[10%] w-[140px] md:w-[220px] pointer-events-none animate-float z-[2]">
+        <div className="relative w-full wolf-breathe">
+          <div className={isHovered ? 'pulse-aura-hot' : 'wolf-call-flare'}>
+            <img
+              src="/images/wolf-line.png"
+              alt=""
+              className={`w-full h-auto block ${isFlickering ? '' : 'transition-opacity duration-500'}`}
+              style={{
+                opacity: isHovered ? 0.85 : 0.4,
+                transition: isFlickering ? 'none' : undefined,
+              }}
+            />
+          </div>
+        </div>
+        {/* Wolf speech bubble — fades in after 200ms on hover */}
+        <div
+          className="absolute top-full left-[18%] mt-1.5"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? 'translateY(0)' : 'translateY(-4px)',
+            transition: isFlickering ? 'none' : `opacity 0.4s ease ${isHovered ? '200ms' : '0ms'}, transform 0.4s ease ${isHovered ? '200ms' : '0ms'}`,
+          }}
+        >
+          <div
+            className="relative px-3 py-1 rounded-full border border-[#E11D48]/50 bg-[#0A0A0A]/90 backdrop-blur-sm"
+            style={{ boxShadow: '0 0 6px rgba(225,29,72,0.35), 0 0 14px rgba(225,29,72,0.15)' }}
+          >
+            <span className="text-[9px] sm:text-[10px] tracking-[0.05em] text-[#E11D48]/90 font-medium whitespace-nowrap">
+              &ldquo;{dialogues[msgIndex].wolf}&rdquo;
+            </span>
+            {/* Tail pointing up to wolf */}
+            <div
+              className="absolute left-3 -top-[5px] w-2 h-2 border-l border-t border-[#E11D48]/50 rotate-45"
+              style={{ background: 'rgba(10,10,10,0.9)' }}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Owl — dim by default, bright on hover */}
-      <div
-        className="absolute right-0 top-[18%] md:right-[4%] md:top-[12%] w-[120px] md:w-[180px] pointer-events-none animate-float z-[2] transition-opacity duration-500"
-        style={{ opacity: isHovered ? 0.7 : 0.25, animationDelay: '2s' }}
-      >
-        <img
-          src="/images/owl-line.png"
-          alt=""
-          className="w-full h-auto transition-all duration-500"
-          style={{ filter: isHovered ? 'drop-shadow(0 0 20px rgba(255,26,26,0.6))' : 'drop-shadow(0 0 5px rgba(255,26,26,0.1))' }}
-        />
+      <div className="absolute right-0 top-[18%] md:right-[4%] md:top-[12%] w-[120px] md:w-[180px] pointer-events-none animate-float z-[2]" style={{ animationDelay: '2s' }}>
+        <div className="relative w-full owl-sway">
+          <div className={isHovered ? 'pulse-aura-hot' : 'owl-receive-flare'}>
+            <img
+              src="/images/owl-line.png"
+              alt=""
+              className={`w-full h-auto block ${isFlickering ? '' : 'transition-opacity duration-500'}`}
+              style={{
+                opacity: isHovered ? 0.85 : 0.4,
+                transition: isFlickering ? 'none' : undefined,
+              }}
+            />
+          </div>
+        </div>
+        {/* Owl speech bubble — replies 600ms after wolf */}
+        <div
+          className="absolute top-full right-[18%] mt-1.5"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? 'translateY(0)' : 'translateY(-4px)',
+            transition: isFlickering ? 'none' : `opacity 0.4s ease ${isHovered ? '600ms' : '0ms'}, transform 0.4s ease ${isHovered ? '600ms' : '0ms'}`,
+          }}
+        >
+          <div
+            className="relative px-3 py-1 rounded-full border border-[#E11D48]/50 bg-[#0A0A0A]/90 backdrop-blur-sm"
+            style={{ boxShadow: '0 0 6px rgba(225,29,72,0.35), 0 0 14px rgba(225,29,72,0.15)' }}
+          >
+            <span className="text-[9px] sm:text-[10px] tracking-[0.05em] text-[#E11D48]/90 font-medium whitespace-nowrap">
+              &ldquo;{dialogues[msgIndex].owl}&rdquo;
+            </span>
+            {/* Tail pointing up to owl */}
+            <div
+              className="absolute right-3 -top-[5px] w-2 h-2 border-l border-t border-[#E11D48]/50 rotate-45"
+              style={{ background: 'rgba(10,10,10,0.9)' }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Center Content */}
@@ -212,6 +313,7 @@ export default function Hero() {
           <NeonSign
             text={neonMessages[msgIndex]}
             isHovered={isHovered}
+            isFlickering={isFlickering}
             onClick={handleNeonClick}
           />
         </div>

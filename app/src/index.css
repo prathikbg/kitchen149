@@ -167,4 +167,97 @@
     }
   }
   .bulb-twinkle { animation: bulb-twinkle 2.4s ease-in-out infinite; }
+
+  /* Broken neon — sparks fly when the sign tries to light up */
+  @keyframes spark-fly {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.3); }
+    8%   { opacity: 1; transform: translate(0, 0) scale(1.1); }
+    35%  { opacity: 0.85; }
+    100% { opacity: 0; transform: translate(var(--sx, 8px), var(--sy, -12px)) scale(0.1); }
+  }
+  .spark-fly {
+    animation: spark-fly 1.1s ease-out infinite;
+  }
+
+  /* Broken neon character — flickers intermittently like a damaged tube */
+  @keyframes neon-broken-flicker {
+    0%, 100%   { opacity: 1; }
+    18%, 19%   { opacity: 0.15; }
+    20%, 41%   { opacity: 1; }
+    42%, 43%   { opacity: 0.35; }
+    44%, 67%   { opacity: 1; }
+    68%, 69%   { opacity: 0.1; }
+    70%, 100%  { opacity: 1; }
+  }
+  .neon-broken-flicker {
+    animation: neon-broken-flicker 2.4s linear infinite;
+  }
+
+  /* Wolf head tilt — subtle "breathing" rotation + chest swell, on top of the float */
+  @keyframes wolf-breathe {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50%      { transform: rotate(1.5deg) scale(1.018); }
+  }
+  .wolf-breathe {
+    animation: wolf-breathe 5.5s ease-in-out infinite;
+    transform-origin: 60% 60%;
+  }
+
+  /* Owl head sway — slow side-to-side + gentle breath, on top of the float */
+  @keyframes owl-sway {
+    0%   { transform: rotate(-1.8deg) scale(1); }
+    50%  { transform: rotate(1.8deg)  scale(1.015); }
+    100% { transform: rotate(-1.8deg) scale(1); }
+  }
+  .owl-sway {
+    animation: owl-sway 6.5s ease-in-out infinite;
+    transform-origin: 50% 60%;
+  }
+
+  /* Aesthetic red aura — silhouette breathes a soft halo, always on, position-free */
+  @keyframes pulse-aura {
+    0%, 100% { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
+    50%      { filter: drop-shadow(0 0 18px rgba(225, 29, 72, 0.50)); }
+  }
+  .pulse-aura {
+    animation: pulse-aura 3.6s ease-in-out infinite;
+  }
+  /* Brighter halo on hover — same rhythm, more intense */
+  @keyframes pulse-aura-hot {
+    0%, 100% { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.40)); }
+    50%      { filter: drop-shadow(0 0 28px rgba(225, 29, 72, 0.85)); }
+  }
+  .pulse-aura-hot {
+    animation: pulse-aura-hot 2.8s ease-in-out infinite;
+  }
+
+  /* Hungry wolf calling his mate — a red ember drifts from wolf → owl every 9s */
+  @keyframes wolf-call-orb {
+    0%   { left: 0%;   opacity: 0;    transform: translate(-50%, 0)      scale(0.35); }
+    6%   { left: 0%;   opacity: 1;    transform: translate(-50%, 0)      scale(1); }
+    50%  { left: 50%;  opacity: 1;    transform: translate(-50%, -14px)  scale(1.15); }
+    90%  { left: 100%; opacity: 0.95; transform: translate(-50%, 6px)    scale(0.9); }
+    100% { left: 100%; opacity: 0;    transform: translate(-50%, 6px)    scale(0.5); }
+  }
+  .wolf-call-orb {
+    animation: wolf-call-orb 9s ease-in-out infinite;
+  }
+
+  /* Wolf's chest puffs up briefly when he calls — synced to the orb's launch */
+  @keyframes wolf-call-flare {
+    0%, 4%, 14%, 100% { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.40)); }
+    8%                 { filter: drop-shadow(0 0 26px rgba(255, 60, 90,  0.85)); }
+  }
+  .wolf-call-flare {
+    animation: wolf-call-flare 9s ease-in-out infinite;
+  }
+
+  /* Owl perks up when the ember arrives */
+  @keyframes owl-receive-flare {
+    0%, 82%, 96%, 100% { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.40)); }
+    90%                { filter: drop-shadow(0 0 26px rgba(255, 60, 90,  0.85)); }
+  }
+  .owl-receive-flare {
+    animation: owl-receive-flare 9s ease-in-out infinite;
+  }
 }
