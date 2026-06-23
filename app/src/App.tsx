@@ -16,12 +16,12 @@ export default function App() {
       <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5]">
         <Navigation />
         <Hero />
+        <HungryWeGotYou />
         <CravingMeter />
         <NightPersonality />
         <SurvivalKits />
         <Signatures />
         <NightHub />
-        <HungryWeGotYou />
         <Footer />
         <OrderCart />
       </div>

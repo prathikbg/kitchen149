@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ShoppingBag, X, Plus, Minus, Phone, MessageCircle, Flame } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ListPlus, X, Plus, Minus, Phone, MessageCircle } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 
 const PHONE = '+917975593357';
@@ -9,14 +9,19 @@ export default function OrderCart() {
   const { items, totalQty, totalPrice, setQty, clear } = useCart();
   const [open, setOpen] = useState(false);
 
-  // Auto-open on first add for nicer UX (only the very first time)
-  const [primed, setPrimed] = useState(false);
+  // Bump the floating button briefly whenever total qty increases — non-intrusive nudge
+  // that replaces the old auto-open behaviour (which hijacked the screen on first add).
+  const [bumping, setBumping] = useState(false);
+  const prevQtyRef = useRef(totalQty);
   useEffect(() => {
-    if (!primed && totalQty > 0) {
-      setOpen(true);
-      setPrimed(true);
+    if (totalQty > prevQtyRef.current) {
+      setBumping(true);
+      const t = setTimeout(() => setBumping(false), 600);
+      prevQtyRef.current = totalQty;
+      return () => clearTimeout(t);
     }
-  }, [totalQty, primed]);
+    prevQtyRef.current = totalQty;
+  }, [totalQty]);
 
   // Lock body scroll when popup open
   useEffect(() => {
@@ -36,16 +41,16 @@ export default function OrderCart() {
 
   return (
     <>
-      {/* Floating Cart Button */}
+      {/* Floating Shortlist Button */}
       {totalQty > 0 && !open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white px-5 py-3 rounded-full shadow-[0_0_25px_rgba(225,29,72,0.5)] transition-all hover:scale-105"
-          aria-label="View order"
+          className={`fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white px-5 py-3 rounded-full shadow-[0_0_25px_rgba(225,29,72,0.5)] transition-all hover:scale-105 ${bumping ? 'cart-bump' : ''}`}
+          aria-label="View your shortlist"
         >
-          <ShoppingBag size={16} />
+          <ListPlus size={16} />
           <span className="text-[12px] font-semibold tracking-[0.1em] uppercase">
-            View Order
+            View Shortlist
           </span>
           <span className="bg-white text-[#E11D48] text-[11px] font-bold rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5">
             {totalQty}
@@ -64,8 +69,8 @@ export default function OrderCart() {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
               <div className="flex items-center gap-2">
-                <Flame size={14} className="text-[#E11D48]" />
-                <p className="text-[10px] tracking-[0.3em] text-[#E11D48] uppercase font-medium">Your Order</p>
+                <ListPlus size={14} className="text-[#E11D48]" />
+                <p className="text-[10px] tracking-[0.3em] text-[#E11D48] uppercase font-medium">Your Shortlist</p>
               </div>
               <button onClick={() => setOpen(false)} className="text-[#A3A3A3] hover:text-white transition-colors">
                 <X size={20} />
@@ -75,22 +80,22 @@ export default function OrderCart() {
             {/* Items */}
             <div className="flex-1 overflow-y-auto px-5 py-4">
               {items.length === 0 ? (
-                <p className="text-[#A3A3A3] text-[13px] text-center py-12">Your order is empty.</p>
+                <p className="text-[#A3A3A3] text-[13px] text-center py-12">Your shortlist is empty.</p>
               ) : (
                 <div className="space-y-3">
                   {items.map((it) => (
-                    <div key={it.name} className="flex items-center gap-3 bg-[#111] rounded-xl p-3 border border-white/[0.04]">
+                    <div key={it.id} className="flex items-center gap-3 bg-[#111] rounded-xl p-3 border border-white/[0.04]">
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-[13px] font-medium truncate">{it.name}</p>
                         <p className="text-[#E11D48] text-[12px] font-bold mt-0.5">₹{it.price} <span className="text-[#A3A3A3] font-normal">× {it.qty}</span></p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <button onClick={() => setQty(it.name, it.qty - 1)}
+                        <button onClick={() => setQty(it.id, it.qty - 1)}
                           className="w-7 h-7 rounded-full border border-[#E11D48]/30 flex items-center justify-center text-[#E11D48] hover:bg-[#E11D48]/10 transition-all">
                           <Minus size={10} />
                         </button>
                         <span className="text-white text-[12px] font-medium w-4 text-center">{it.qty}</span>
-                        <button onClick={() => setQty(it.name, it.qty + 1, it.price)}
+                        <button onClick={() => setQty(it.id, it.qty + 1, it)}
                           className="w-7 h-7 rounded-full bg-[#E11D48] flex items-center justify-center text-white hover:bg-[#BE123C] transition-all">
                           <Plus size={10} />
                         </button>
@@ -110,25 +115,23 @@ export default function OrderCart() {
                 </div>
 
                 <p className="text-[#A3A3A3] text-[11px] leading-relaxed">
-                  This isn't a checkout — just your shortlist. Call or WhatsApp us and we'll get it ready.
+                  Send your shortlist to the kitchen — we&apos;ll prep it and call you back to confirm.
                 </p>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <a href={`tel:${PHONE}`}
-                    className="flex items-center justify-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white px-4 py-3 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase transition-all shadow-[0_0_15px_rgba(225,29,72,0.3)]">
-                    <Phone size={13} /> Call to Order
-                  </a>
-                  <a href={waHref} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 border border-[#22C55E]/40 text-[#22C55E] hover:bg-[#22C55E]/10 px-4 py-3 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase transition-all">
-                    <MessageCircle size={13} /> WhatsApp
-                  </a>
-                </div>
+                <a href={waHref} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white px-4 py-3.5 rounded-full text-[12px] font-semibold tracking-[0.1em] uppercase transition-all shadow-[0_0_18px_rgba(34,197,94,0.35)]">
+                  <MessageCircle size={14} /> Send via WhatsApp
+                </a>
 
-                <div className="flex items-center justify-between pt-1">
+                <a href={`tel:${PHONE}`}
+                  className="flex items-center justify-center gap-2 border border-[#E11D48]/40 text-[#E11D48] hover:bg-[#E11D48]/10 px-4 py-3 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase transition-all">
+                  <Phone size={13} /> Or call {PHONE_DISPLAY}
+                </a>
+
+                <div className="flex items-center justify-end pt-1">
                   <button onClick={clear} className="text-[#A3A3A3] text-[11px] hover:text-white transition-colors">
-                    Clear order
+                    Clear shortlist
                   </button>
-                  <span className="text-[#A3A3A3] text-[11px]">{PHONE_DISPLAY}</span>
                 </div>
               </div>
             )}

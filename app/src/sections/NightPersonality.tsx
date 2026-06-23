@@ -22,7 +22,7 @@ export default function NightPersonality() {
   const comboTotal = dishes.reduce((sum, d) => sum + d.price, 0);
 
   const addCombo = () => {
-    dishes.forEach((d) => setQty(d.name, getQty(d.name) + 1, d.price));
+    dishes.forEach((d) => setQty(d.id, getQty(d.id) + 1, d));
   };
 
   return (
@@ -89,7 +89,7 @@ export default function NightPersonality() {
         {/* Dishes */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-[1200px] mx-auto" key={`dishes-${active}`}>
           {dishes.map((d, i) => {
-            const q = getQty(d.name);
+            const q = getQty(d.id);
             return (
               <div
                 key={`${active}-${i}`}
@@ -120,7 +120,7 @@ export default function NightPersonality() {
                     {q > 0 ? (
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => setQty(d.name, q - 1, d.price)}
+                          onClick={() => setQty(d.id, q - 1)}
                           className="w-8 h-8 rounded-full border flex items-center justify-center transition-all"
                           style={{ borderColor: `${p.color}50`, color: p.color }}
                           aria-label="Decrease"
@@ -129,7 +129,7 @@ export default function NightPersonality() {
                         </button>
                         <span className="text-white text-[14px] font-semibold w-5 text-center">{q}</span>
                         <button
-                          onClick={() => setQty(d.name, q + 1, d.price)}
+                          onClick={() => setQty(d.id, q + 1, d)}
                           className="w-8 h-8 rounded-full flex items-center justify-center text-white transition-all"
                           style={{ backgroundColor: p.color, boxShadow: `0 0 10px ${p.color}50` }}
                           aria-label="Increase"
@@ -139,7 +139,7 @@ export default function NightPersonality() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => setQty(d.name, 1, d.price)}
+                        onClick={() => setQty(d.id, 1, d)}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-full border text-[12px] tracking-wider uppercase font-semibold transition-all"
                         style={{ borderColor: `${p.color}50`, color: p.color }}
                       >

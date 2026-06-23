@@ -40,7 +40,7 @@ function HeatSelector() {
   const comboTotal = dishes.reduce((s, d) => s + d.price, 0);
 
   const addCombo = () => {
-    dishes.forEach((d) => setQty(d.name, getQty(d.name) + 1, d.price));
+    dishes.forEach((d) => setQty(d.id, getQty(d.id) + 1, d));
   };
 
   return (
@@ -110,7 +110,7 @@ function HeatSelector() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {dishes.map((d, i) => {
-            const q = getQty(d.name);
+            const q = getQty(d.id);
             return (
               <div
                 key={d.id}
@@ -139,7 +139,7 @@ function HeatSelector() {
                     {q > 0 ? (
                       <div className="flex items-center gap-1.5">
                         <button
-                          onClick={() => setQty(d.name, q - 1, d.price)}
+                          onClick={() => setQty(d.id, q - 1)}
                           className="w-7 h-7 rounded-full border flex items-center justify-center transition-all"
                           style={{ borderColor: `${level.color}50`, color: level.color }}
                           aria-label="Decrease"
@@ -148,7 +148,7 @@ function HeatSelector() {
                         </button>
                         <span className="text-white text-[12px] font-semibold w-4 text-center">{q}</span>
                         <button
-                          onClick={() => setQty(d.name, q + 1, d.price)}
+                          onClick={() => setQty(d.id, q + 1, d)}
                           className="w-7 h-7 rounded-full flex items-center justify-center text-white transition-all"
                           style={{ backgroundColor: level.color, boxShadow: `0 0 8px ${level.color}50` }}
                           aria-label="Increase"
@@ -158,7 +158,7 @@ function HeatSelector() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => setQty(d.name, 1, d.price)}
+                        onClick={() => setQty(d.id, 1, d)}
                         className="flex items-center gap-1 px-3 py-1.5 rounded-full border text-[10px] tracking-wider uppercase font-semibold transition-all"
                         style={{ borderColor: `${level.color}50`, color: level.color }}
                       >

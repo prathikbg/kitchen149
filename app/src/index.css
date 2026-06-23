@@ -231,33 +231,67 @@
     animation: pulse-aura-hot 2.8s ease-in-out infinite;
   }
 
-  /* Hungry wolf calling his mate — a red ember drifts from wolf → owl every 9s */
+  /* Cart button bump — short pop on add so users notice the floating CTA */
+  @keyframes cart-bump {
+    0%   { transform: scale(1);    box-shadow: 0 0 25px rgba(225,29,72,0.5); }
+    35%  { transform: scale(1.12); box-shadow: 0 0 40px rgba(225,29,72,0.85), 0 0 80px rgba(225,29,72,0.3); }
+    100% { transform: scale(1);    box-shadow: 0 0 25px rgba(225,29,72,0.5); }
+  }
+  .cart-bump {
+    animation: cart-bump 0.55s ease-out;
+  }
+
+  /* Wolf calls owl — red ember drifts from wolf side to owl side on a 9s loop */
   @keyframes wolf-call-orb {
-    0%   { left: 0%;   opacity: 0;    transform: translate(-50%, 0)      scale(0.35); }
-    6%   { left: 0%;   opacity: 1;    transform: translate(-50%, 0)      scale(1); }
-    50%  { left: 50%;  opacity: 1;    transform: translate(-50%, -14px)  scale(1.15); }
-    90%  { left: 100%; opacity: 0.95; transform: translate(-50%, 6px)    scale(0.9); }
-    100% { left: 100%; opacity: 0;    transform: translate(-50%, 6px)    scale(0.5); }
+    0%        { left: 0%;   opacity: 0;   transform: translateY(0);     }
+    4%        {              opacity: 1;                                  }
+    50%       {                            transform: translateY(-14px); }
+    55%       { left: 100%; opacity: 0.5; transform: translateY(0);     }
+    60%, 100% { left: 100%; opacity: 0;                                  }
   }
   .wolf-call-orb {
     animation: wolf-call-orb 9s ease-in-out infinite;
   }
-
-  /* Wolf's chest puffs up briefly when he calls — synced to the orb's launch */
+  /* Wolf flares when the call leaves — synced to the orb's 0–4% window */
   @keyframes wolf-call-flare {
-    0%, 4%, 14%, 100% { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.40)); }
-    8%                 { filter: drop-shadow(0 0 26px rgba(255, 60, 90,  0.85)); }
+    0%   { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
+    3%   { filter: drop-shadow(0 0 22px rgba(225, 29, 72, 0.85)); }
+    10%  { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
+    50%  { filter: drop-shadow(0 0 10px rgba(225, 29, 72, 0.32)); }
+    100% { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
   }
   .wolf-call-flare {
     animation: wolf-call-flare 9s ease-in-out infinite;
   }
-
-  /* Owl perks up when the ember arrives */
+  /* Owl flares when the call arrives — synced to the orb's 50–60% window */
   @keyframes owl-receive-flare {
-    0%, 82%, 96%, 100% { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.40)); }
-    90%                { filter: drop-shadow(0 0 26px rgba(255, 60, 90,  0.85)); }
+    0%   { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
+    50%  { filter: drop-shadow(0 0 10px rgba(225, 29, 72, 0.32)); }
+    55%  { filter: drop-shadow(0 0 22px rgba(225, 29, 72, 0.85)); }
+    62%  { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
+    100% { filter: drop-shadow(0 0 6px  rgba(225, 29, 72, 0.18)); }
   }
   .owl-receive-flare {
     animation: owl-receive-flare 9s ease-in-out infinite;
+  }
+
+  /* Scroll cue ember — orb fades in from above, falls toward the next section, dissipates */
+  @keyframes ember-fall {
+    0%   { opacity: 0;    transform: translate(-50%, -10px) scale(0.5); }
+    20%  { opacity: 1;    transform: translate(-50%, 2px)   scale(1);   }
+    100% { opacity: 0;    transform: translate(-50%, 38px)  scale(0.4); }
+  }
+  .ember-fall {
+    animation: ember-fall 2.8s ease-in infinite;
+  }
+  /* Faint vertical trail behind the falling ember */
+  @keyframes ember-trail {
+    0%   { opacity: 0;    transform: translate(-50%, -10px) scaleY(0.2); }
+    30%  { opacity: 0.55; }
+    100% { opacity: 0;    transform: translate(-50%, 22px)  scaleY(1);   }
+  }
+  .ember-trail {
+    animation: ember-trail 2.8s ease-in infinite;
+    transform-origin: top center;
   }
 }

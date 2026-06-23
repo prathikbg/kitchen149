@@ -25,7 +25,7 @@ export default function CravingMeter() {
   }, [current.dishes, diet]);
 
   const addAll = () => {
-    dishes.forEach((d) => setQty(d.name, getQty(d.name) + 1, d.price));
+    dishes.forEach((d) => setQty(d.id, getQty(d.id) + 1, d));
   };
 
   return (
@@ -131,7 +131,7 @@ export default function CravingMeter() {
           ) : (
             <div className="flex gap-4 pb-2 snap-x snap-mandatory">
               {dishes.map((d, i) => {
-                const q = getQty(d.name);
+                const q = getQty(d.id);
                 const veg = isVeg(d);
                 return (
                   <div
@@ -163,7 +163,7 @@ export default function CravingMeter() {
                       <p className="text-[#E11D48] text-[16px] font-bold mt-1">{`\u20B9${d.price}`}</p>
                     </div>
                     <button
-                      onClick={() => setQty(d.name, q + 1, d.price)}
+                      onClick={() => setQty(d.id, q + 1, d)}
                       className="mr-2.5 w-9 h-9 rounded-full bg-[#E11D48] flex items-center justify-center text-white hover:bg-[#BE123C] transition-all shadow-[0_0_10px_rgba(225,29,72,0.3)] flex-shrink-0"
                       aria-label={`Add ${d.name}`}
                     >

@@ -42,7 +42,7 @@ export default function SurvivalKits() {
   const handleGrab = (kitIdx: number, dishIds: string[]) => {
     const dishes = getDishes(dishIds);
     dishes.forEach((d) => {
-      setQty(d.name, getQty(d.name) + 1, d.price);
+      setQty(d.id, getQty(d.id) + 1, d);
     });
     setJustAdded(kitIdx);
     setTimeout(() => setJustAdded((v) => (v === kitIdx ? null : v)), 1800);

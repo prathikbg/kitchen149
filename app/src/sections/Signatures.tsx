@@ -63,7 +63,7 @@ export default function Signatures() {
         {/* Menu Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((d, i) => {
-            const q = getQty(d.name);
+            const q = getQty(d.id);
             const isHovered = hoveredIdx === i;
             return (
               <div
@@ -143,18 +143,18 @@ export default function Signatures() {
                   <div className="flex items-center justify-end mt-3">
                     {q > 0 ? (
                       <div className="flex items-center gap-2">
-                        <button onClick={() => setQty(d.name, q - 1, d.price)}
+                        <button onClick={() => setQty(d.id, q - 1)}
                           className="w-8 h-8 rounded-full border border-[#E11D48]/30 flex items-center justify-center text-[#E11D48] hover:bg-[#E11D48]/10 transition-all">
                           <Minus size={12} />
                         </button>
                         <span className="text-white text-[14px] font-medium w-5 text-center">{q}</span>
-                        <button onClick={() => setQty(d.name, q + 1, d.price)}
+                        <button onClick={() => setQty(d.id, q + 1, d)}
                           className="w-8 h-8 rounded-full bg-[#E11D48] flex items-center justify-center text-white hover:bg-[#BE123C] transition-all shadow-[0_0_10px_rgba(225,29,72,0.3)]">
                           <Plus size={12} />
                         </button>
                       </div>
                     ) : (
-                      <button onClick={() => setQty(d.name, 1, d.price)}
+                      <button onClick={() => setQty(d.id, 1, d)}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E11D48]/30 text-[#E11D48] text-[11px] tracking-wider uppercase font-semibold hover:bg-[#E11D48] hover:text-white hover:border-[#E11D48] transition-all hover:shadow-[0_0_10px_rgba(225,29,72,0.3)]">
                         <Plus size={12} /> Add
                       </button>

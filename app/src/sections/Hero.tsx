@@ -1,23 +1,16 @@
 import { useState, useCallback, useMemo } from 'react';
-import { ArrowRight } from 'lucide-react';
 
 const neonMessages = [
   'Cravings Wake Up.',
-  'Open Till 2 AM.',
-  'Order Now.',
-  'Hungry? We Got You.',
   'The Wolf Hungers.',
   'The Owl Knows.',
 ];
 
-// Wolf opens, owl replies — rotates with each neon message
+// Wolf opens, owl replies — one pair per neon message
 const dialogues = [
   { wolf: 'still up?',           owl: 'since 2 AM.' },
-  { wolf: 'boss is awake.',      owl: "we don't sleep." },
-  { wolf: 'noodles?',            owl: 'obviously.' },
-  { wolf: 'chilli or schezwan?', owl: 'yes.' },
-  { wolf: 'smell that wok hei?', owl: 'always.' },
-  { wolf: "what's cooking?",     owl: 'everything.' },
+  { wolf: 'smell that wok hei?', owl: 'always.'     },
+  { wolf: 'chilli or schezwan?', owl: 'yes.'        },
 ];
 
 // Deterministic pseudo-random so each text has a stable "broken" pattern
@@ -183,18 +176,12 @@ export default function Hero() {
         }}
       />
 
-      {/* Steam — visible on hover */}
+      {/* Steam — single plume, visible on hover */}
       <div
         className="absolute top-[18%] right-[22%] z-[1] pointer-events-none transition-opacity duration-500"
         style={{ opacity: isHovered ? 1 : 0 }}
       >
         <div className="w-0.5 h-14 bg-gradient-to-t from-[#E11D48]/20 to-transparent rounded-full animate-steam" />
-      </div>
-      <div
-        className="absolute top-[22%] right-[28%] z-[1] pointer-events-none transition-opacity duration-500"
-        style={{ opacity: isHovered ? 1 : 0, animationDelay: '1.5s' }}
-      >
-        <div className="w-px h-10 bg-gradient-to-t from-[#E11D48]/15 to-transparent rounded-full animate-steam" />
       </div>
 
       {/* Hungry wolf calls his mate — a red ember drifts from wolf to owl every 9s */}
@@ -211,7 +198,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Wolf — dim by default, bright on hover */}
+      {/* Wolf — dim by default, flares when sending the call, bright on hover */}
       <div className="absolute left-0 top-[15%] md:left-[4%] md:top-[10%] w-[140px] md:w-[220px] pointer-events-none animate-float z-[2]">
         <div className="relative w-full wolf-breathe">
           <div className={isHovered ? 'pulse-aura-hot' : 'wolf-call-flare'}>
@@ -226,7 +213,7 @@ export default function Hero() {
             />
           </div>
         </div>
-        {/* Wolf speech bubble — fades in after 200ms on hover */}
+        {/* Wolf speech bubble — fades in 200ms after hover */}
         <div
           className="absolute top-full left-[18%] mt-1.5"
           style={{
@@ -242,7 +229,6 @@ export default function Hero() {
             <span className="text-[9px] sm:text-[10px] tracking-[0.05em] text-[#E11D48]/90 font-medium whitespace-nowrap">
               &ldquo;{dialogues[msgIndex].wolf}&rdquo;
             </span>
-            {/* Tail pointing up to wolf */}
             <div
               className="absolute left-3 -top-[5px] w-2 h-2 border-l border-t border-[#E11D48]/50 rotate-45"
               style={{ background: 'rgba(10,10,10,0.9)' }}
@@ -251,7 +237,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Owl — dim by default, bright on hover */}
+      {/* Owl — dim by default, flares when receiving the call, bright on hover */}
       <div className="absolute right-0 top-[18%] md:right-[4%] md:top-[12%] w-[120px] md:w-[180px] pointer-events-none animate-float z-[2]" style={{ animationDelay: '2s' }}>
         <div className="relative w-full owl-sway">
           <div className={isHovered ? 'pulse-aura-hot' : 'owl-receive-flare'}>
@@ -266,7 +252,7 @@ export default function Hero() {
             />
           </div>
         </div>
-        {/* Owl speech bubble — replies 600ms after wolf */}
+        {/* Owl speech bubble — replies 600ms after the wolf */}
         <div
           className="absolute top-full right-[18%] mt-1.5"
           style={{
@@ -282,7 +268,6 @@ export default function Hero() {
             <span className="text-[9px] sm:text-[10px] tracking-[0.05em] text-[#E11D48]/90 font-medium whitespace-nowrap">
               &ldquo;{dialogues[msgIndex].owl}&rdquo;
             </span>
-            {/* Tail pointing up to owl */}
             <div
               className="absolute right-3 -top-[5px] w-2 h-2 border-l border-t border-[#E11D48]/50 rotate-45"
               style={{ background: 'rgba(10,10,10,0.9)' }}
@@ -323,20 +308,8 @@ export default function Hero() {
           Indo-Chinese wok-tossed comfort food. Built for Bengaluru&apos;s night owls, gamers, coders &amp; dreamers.
         </p>
 
-        {/* CTAs */}
-        <div className="animate-fade-up-d4 flex flex-wrap items-center justify-center gap-3 mt-10">
-          <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#E11D48] hover:bg-[#ff1a1a] text-white px-8 py-3.5 text-[13px] font-semibold tracking-[0.15em] transition-all rounded-full">
-            ORDER NOW <ArrowRight size={16} />
-          </a>
-          <button onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex items-center gap-2 text-[#A3A3A3] hover:text-white px-7 py-3.5 text-[13px] tracking-[0.12em] transition-all border border-white/10 hover:border-[#E11D48]/30 rounded-full">
-            VIEW MENU
-          </button>
-        </div>
-
-        {/* Characters */}
-        <div className="animate-fade-up-d5 flex items-center justify-center gap-7 mt-12">
+        {/* Characters — Hungry Wolf | Night Owl */}
+        <div className="animate-fade-up-d4 flex items-center justify-center gap-7 mt-10">
           <div className="flex items-center gap-2">
             <span className="text-xl">&#x1F43A;</span>
             <span className="text-[12px] tracking-[0.18em] text-[#A3A3A3]/60 uppercase font-medium">Hungry Wolf</span>
@@ -348,8 +321,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Open Till 2AM */}
-        <div className="animate-fade-up-d5 mt-7 inline-block">
+        {/* Open Till 2:00 AM */}
+        <div className="animate-fade-up-d5 mt-6 inline-block">
           <div className="animate-pulse-glow inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#E11D48]/20 bg-[#0A0A0A]/40">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E11D48" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             <span className="text-[11px] tracking-[0.22em] text-[#A3A3A3]/60 uppercase font-medium">Open Till</span>
@@ -357,6 +330,34 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Scroll cue — ember drips toward HungryWeGotYou; tap to scroll */}
+      <button
+        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        aria-label="Scroll to next section"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-3 group"
+      >
+        <span className="text-[9px] tracking-[0.32em] text-[#A3A3A3]/40 uppercase group-hover:text-[#E11D48]/80 transition-colors">
+          What&apos;s Cooking
+        </span>
+        <div className="relative h-[44px] w-[14px]">
+          {/* Trail — thin vertical streak behind the ember */}
+          <span
+            className="ember-trail absolute top-0 left-1/2 w-px h-6"
+            style={{
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(225,29,72,0.75) 50%, transparent 100%)',
+            }}
+          />
+          {/* The ember itself */}
+          <span
+            className="ember-fall absolute top-0 left-1/2 w-[9px] h-[9px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,220,225,1) 0%, rgba(255,80,100,0.95) 35%, rgba(225,29,72,0.6) 65%, transparent 90%)',
+              boxShadow: '0 0 8px rgba(255,80,100,0.9), 0 0 20px rgba(225,29,72,0.55), 0 0 40px rgba(225,29,72,0.25)',
+            }}
+          />
+        </div>
+      </button>
 
       {/* Bottom gradient */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent pointer-events-none" />
