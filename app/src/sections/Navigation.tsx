@@ -41,7 +41,7 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center gap-3">
-            <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
+            <a href="#order"
               className="hidden sm:flex items-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white px-6 py-2.5 text-[11px] font-semibold tracking-[0.15em] transition-all rounded-full">
               <ShoppingBag size={14} /> ORDER NOW
             </a>
@@ -59,7 +59,7 @@ export default function Navigation() {
             <a key={l.label} href={l.href} onClick={() => setMenuOpen(false)}
               className="text-white text-xl font-medium tracking-[0.15em] hover:text-[#E11D48] transition-colors">{l.label}</a>
           ))}
-          <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
+          <a href="#order"
             className="flex items-center gap-2 bg-[#E11D48] text-white px-8 py-3 text-[12px] font-semibold tracking-[0.15em] rounded-full mt-4"
             onClick={() => setMenuOpen(false)}>
             <ShoppingBag size={16} /> ORDER NOW

@@ -42,7 +42,7 @@ export default function Footer() {
               <p className="text-[14px] font-bold text-white tracking-wide">LATE NIGHT?</p>
               <p className="text-[#E11D48] text-[14px] font-bold tracking-wide">WE GOT YOU.</p>
             </div>
-            <a href="https://www.swiggy.com/city/bangalore/kitchen-149-hsr-rest1388005" target="_blank" rel="noopener noreferrer"
+            <a href="#order"
               className="w-11 h-11 rounded-full bg-[#E11D48] flex items-center justify-center hover:bg-[#BE123C] transition-all">
               <ArrowRight size={18} className="text-white" />
             </a>
