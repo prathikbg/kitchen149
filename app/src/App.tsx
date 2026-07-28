@@ -9,6 +9,7 @@ import HungryWeGotYou from '@/sections/HungryWeGotYou'
 import Footer from '@/sections/Footer'
 import OrderCart from '@/sections/OrderCart'
 import { CartProvider } from '@/contexts/CartContext'
+import AdUnit from '@/components/AdUnit'
 
 export default function App() {
   return (
@@ -17,9 +18,11 @@ export default function App() {
         <Navigation />
         <Hero />
         <HungryWeGotYou />
+        <AdUnit />
         <CravingMeter />
         <NightPersonality />
         <SurvivalKits />
+        <AdUnit />
         <Signatures />
         <NightHub />
         <Footer />
